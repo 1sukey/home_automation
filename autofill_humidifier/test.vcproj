@@ -195,7 +195,7 @@
 	<Globals>
 		<Global
 			Name="arduino.upload.port"
-			Value="COM5"
+			Value="COM4"
 		/>
 	</Globals>
 </VisualStudioProject>

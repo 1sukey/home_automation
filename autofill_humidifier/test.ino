@@ -14,7 +14,7 @@ Adafruit_RGBLCDShield lcd = Adafruit_RGBLCDShield();
 #define pumpPin  6 
 
 //sleepFor in minutes, fillFor in half seconds
-#define sleepFor 100
+int sleepFor = 160;
 #define fillFor 20
 
 int cycles = 0;
@@ -58,7 +58,7 @@ void loop() {
 			lcd_out("Full Cycle Ran");
 		}else{
 			lcd_out("Partial Cycle");
-			lcd.setCursor(2,1); 
+			lcd.setCursor(0,1); 
 			lcd.print(i);
 		}
 
@@ -67,7 +67,7 @@ void loop() {
 	cycles++;
 	delay(2000); //time for user to read debug message
     
-	//one fill should last for 100 minutes..we want to run it dry if we can 
+	//one fill should last for xx minutes..we want to run it dry if we can 
 	//(try not to hit sensor which is already showing hard water scale)
 	delay_x_min(sleepFor); 
 	
@@ -89,14 +89,26 @@ void delay_x_min(int minutes){
 
   for(int i=0; i < minutes; i++){
       
-      sprintf(tmp, " %d/%d %d min", waters, cycles, minutes - i); //fixed display bug lcd not overwriting tens digit once <= 9
+      sprintf(tmp, " %d/%d %dm", waters, cycles, minutes - i); //fixed display bug lcd not overwriting tens digit once <= 9
       lcd.setCursor(16 - strlen(tmp),1); 
       lcd.print(tmp);
        
       for(int j=0; j < 240; j++){ //entire j loop = one minute, using small delay so buttons responsive.. 
-	  delay(250);  
-          uint8_t buttons = lcd.readButtons();
-	  if (buttons && (buttons & BUTTON_UP) ) return; //break delay to do immediate upload test
+         delay(250);  
+         uint8_t buttons = lcd.readButtons();
+		 if (buttons && (buttons & BUTTON_SELECT) ) return; //break delay to do immediate upload test
+		 if (buttons && (buttons & BUTTON_UP) ){
+			 sleepFor++;
+			 lcd.setCursor(0,1); 
+			 lcd.print("Sleep: ");
+			 lcd.print(sleepFor);
+		 }
+		 if (buttons && (buttons & BUTTON_DOWN) ){
+			 sleepFor--;
+			 lcd.setCursor(0,1); 
+			 lcd.print("Sleep: ");
+			 lcd.print(sleepFor);
+		 }
       }
   }
 
