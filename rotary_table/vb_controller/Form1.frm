@@ -108,6 +108,24 @@ Begin VB.Form Form1
       _Version        =   393216
       DTREnable       =   -1  'True
    End
+   Begin VB.Label lblRefresh 
+      Caption         =   "Refresh"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   195
+      Left            =   540
+      TabIndex        =   17
+      Top             =   540
+      Width           =   780
+   End
    Begin VB.Label Label5 
       Caption         =   "received"
       Height          =   240
@@ -350,6 +368,15 @@ Private Sub Form_Unload(Cancel As Integer)
     txtSend = Empty
     txtrecv = Empty
     LoadSettings True
+End Sub
+
+Private Sub lblRefresh_Click()
+    Screen.MousePointer = vbHourglass
+    CboPort.Clear
+    txtrecv = Empty
+    txtSend = Empty
+    LoadPorts
+    Screen.MousePointer = vbDefault
 End Sub
 
 Private Sub serial_MessageReceived(msg As String)
