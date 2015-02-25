@@ -31,7 +31,10 @@
             
        * all buttons are normally high using the internal pull-up resistors. They do not need to be Debounced
             because internal delays in the code account for this. When they go to ground they are pressed.
-            
+                       
+      2.24.15 - added gotoPos feature + curPos feedback in serialOut for gui
+      
+      
   */
   
   
@@ -69,20 +72,26 @@
      
  void loop()
  {
-         
+      
+      int v1, v2;   
              
       if (Serial.available())
       {       
-          //expected input format: 200,1
+          //expected input format is steps,delayms  eg: 200,1
           //must configure the Arduino at least once from the PC app before using the physical "next" button
           
-          cycles = 0; //this is our new home position
-          steps = Serial.parseInt();
-          delay_ms = Serial.parseInt();
-          
-          //if (Serial.read() == '\n') runCycle();
+          v1 = Serial.parseInt();
+          v2 = Serial.parseInt();
           while( Serial.available() ) Serial.read(); //clear any remaining chars from buffer...
-          msg("configured + zero!");
+          
+          if(v1 == 32666){ //magic value telling us to go to position v2
+              gotoPos(v2);
+          }else{
+              cycles = 0; //this is our new home position
+              steps = v1;
+              delay_ms = v2;
+              msg("configured + zero!");
+          }
           
       }
       else
@@ -146,9 +155,32 @@
         
  }
  
+ void gotoPos(int index){
+   
+       int delta = 0;
+   
+       if(steps == 0){
+          msg("not configured!");
+          return;
+       }  
+       
+       if(cycles > index){ //already passed it...so reverse
+             digitalWrite(dirPin, 1);
+             delta = cycles - index; 
+       }else{           
+             delta = index - cycles;     
+       }
+       while(delta--) runCycle(0); 
+       digitalWrite(dirPin, 0);
+       cycles = index;
+       msg("gotoPos");
+            
+ }
+ 
  void msg(char* x){ 
-   Serial.print(x);
-   Serial.print("\n");
+   char buf[200];
+   sprintf(buf, "%s [pos:%d]\n", x, cycles);
+   Serial.print(buf);
  }
  
  void runCycle(int extTrigger)

@@ -2,35 +2,43 @@ VERSION 5.00
 Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
 Begin VB.Form Form1 
    Caption         =   "Rotary Table Indexer - sandsprite.com"
-   ClientHeight    =   2700
+   ClientHeight    =   4020
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   4755
+   ClientWidth     =   4800
    LinkTopic       =   "Form1"
-   ScaleHeight     =   2700
-   ScaleWidth      =   4755
+   ScaleHeight     =   4020
+   ScaleWidth      =   4800
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton Command1 
-      Caption         =   "about"
-      Height          =   375
-      Left            =   3465
-      TabIndex        =   16
-      Top             =   2250
-      Width           =   1140
+   Begin VB.TextBox txtSend 
+      Height          =   285
+      Left            =   1350
+      TabIndex        =   18
+      Top             =   3240
+      Width           =   3300
    End
    Begin VB.TextBox txtrecv 
       Height          =   285
-      Left            =   900
-      TabIndex        =   15
-      Top             =   2295
-      Width           =   2445
+      Left            =   1350
+      TabIndex        =   17
+      Top             =   3645
+      Width           =   3300
    End
-   Begin VB.TextBox txtSend 
-      Height          =   285
-      Left            =   900
-      TabIndex        =   13
-      Top             =   1890
-      Width           =   2445
+   Begin VB.CommandButton Command1 
+      Caption         =   "about"
+      Height          =   375
+      Left            =   3510
+      TabIndex        =   16
+      Top             =   2835
+      Width           =   1185
+   End
+   Begin VB.CommandButton cmdGotoIndex 
+      Caption         =   "Goto Index"
+      Height          =   375
+      Left            =   3510
+      TabIndex        =   15
+      Top             =   2160
+      Width           =   1185
    End
    Begin VB.TextBox TxtDelay 
       Alignment       =   1  'Right Justify
@@ -95,10 +103,10 @@ Begin VB.Form Form1
    Begin VB.CommandButton CmdMove 
       Caption         =   "configure"
       Height          =   375
-      Left            =   3465
+      Left            =   3510
       TabIndex        =   0
-      Top             =   1800
-      Width           =   1140
+      Top             =   1395
+      Width           =   1185
    End
    Begin MSCommLib.MSComm MSComm1 
       Left            =   5310
@@ -107,6 +115,70 @@ Begin VB.Form Form1
       _ExtentY        =   1005
       _Version        =   393216
       DTREnable       =   -1  'True
+   End
+   Begin VB.Label Label7 
+      Caption         =   "Debug Info:"
+      Height          =   240
+      Left            =   90
+      TabIndex        =   21
+      Top             =   2880
+      Width           =   1230
+   End
+   Begin VB.Label Label5 
+      Caption         =   "sent"
+      Height          =   240
+      Index           =   0
+      Left            =   540
+      TabIndex        =   20
+      Top             =   3285
+      Width           =   420
+   End
+   Begin VB.Label Label5 
+      Caption         =   "received"
+      Height          =   240
+      Index           =   1
+      Left            =   540
+      TabIndex        =   19
+      Top             =   3690
+      Width           =   690
+   End
+   Begin VB.Line Line3 
+      X1              =   45
+      X2              =   4770
+      Y1              =   1935
+      Y2              =   1935
+   End
+   Begin VB.Line Line2 
+      X1              =   45
+      X2              =   4770
+      Y1              =   2745
+      Y2              =   2745
+   End
+   Begin VB.Label lblPos 
+      Caption         =   "0"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   13.5
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FF0000&
+      Height          =   330
+      Left            =   1260
+      TabIndex        =   14
+      Top             =   2160
+      Width           =   780
+   End
+   Begin VB.Label Label6 
+      Caption         =   "Cur Index:"
+      Height          =   240
+      Left            =   225
+      TabIndex        =   13
+      Top             =   2205
+      Width           =   915
    End
    Begin VB.Label lblRefresh 
       Caption         =   "Refresh"
@@ -122,27 +194,9 @@ Begin VB.Form Form1
       ForeColor       =   &H00FF0000&
       Height          =   195
       Left            =   540
-      TabIndex        =   17
+      TabIndex        =   12
       Top             =   540
       Width           =   780
-   End
-   Begin VB.Label Label5 
-      Caption         =   "received"
-      Height          =   240
-      Index           =   1
-      Left            =   90
-      TabIndex        =   14
-      Top             =   2340
-      Width           =   690
-   End
-   Begin VB.Label Label5 
-      Caption         =   "sent"
-      Height          =   240
-      Index           =   0
-      Left            =   90
-      TabIndex        =   12
-      Top             =   1935
-      Width           =   420
    End
    Begin VB.Line Line1 
       BorderColor     =   &H00FF0000&
@@ -282,6 +336,30 @@ Function validate(stepsPerRev, TableRatio, Delay, divisions) As Boolean
 
 End Function
 
+Private Sub cmdGotoIndex_Click()
+
+    Dim index As Integer, y As String
+    
+    y = InputBox("Enter index to jump to:", "Goto Index", 0)
+    If Len(y) = 0 Then Exit Sub
+    
+    On Error Resume Next
+    index = CInt(y)
+    
+    If index < 0 Then
+        MsgBox "negative indexes are not currently supported", vbInformation
+        Exit Sub
+    End If
+    
+    '32666 is an invalid step number, magic value to trigger this feature..
+    y = "32666," & index
+    txtSend = y
+    txtrecv = Empty
+    
+    MSComm1.Output = y & vbLf
+    
+End Sub
+
 Private Sub CmdMove_Click()
 
     Dim divisions As Currency
@@ -312,7 +390,8 @@ Private Sub CmdMove_Click()
         
     Cmd = CLng(steps) & "," & Delay '& "," & ChkCounterClockwise.Value
     txtSend = Cmd
-     
+    txtrecv = Empty
+    
     MSComm1.Output = Cmd & vbLf
             
 End Sub
@@ -327,6 +406,10 @@ Private Sub Command1_Click()
             "Source:" & vbCrLf & _
             "  https://github.com/dzzie/home_automation/tree/master/rotary_table", vbInformation
             
+End Sub
+
+Private Sub Command2_Click()
+
 End Sub
 
 Private Sub Form_Load()
@@ -380,5 +463,16 @@ Private Sub lblRefresh_Click()
 End Sub
 
 Private Sub serial_MessageReceived(msg As String)
+
     txtrecv.Text = Format(Now, "hh:nn.ss  -  ") & msg
+    
+    a = InStr(msg, "[pos:")
+    If a > 0 Then
+        a = a + Len("[pos:")
+        b = InStr(a, msg, "]")
+        If b > 0 Then
+            lblPos.Caption = Mid(msg, a, b - a)
+        End If
+    End If
+    
 End Sub

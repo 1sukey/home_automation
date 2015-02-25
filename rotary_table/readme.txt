@@ -27,6 +27,8 @@ The arduino code supports the following options:
 	* switch so buttons operate as a jog mode
 	* home button
 	* external trigger pin (to say fire a drill cycle in another arduino)
+             * feature to jump to specific index from GUI input
+             * GUI will display which index you are currently at
 
 This program is released free for personal home use. 
 If you use it commercially please offer a donation for my time.
