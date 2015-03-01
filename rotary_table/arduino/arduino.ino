@@ -33,6 +33,7 @@
             because internal delays in the code account for this. When they go to ground they are pressed.
                        
       2.24.15 - added gotoPos feature + curPos feedback in serialOut for gui
+      3.02.15 - if not configured by pc it will operate in jog mode when buttons pushed 
       
       
   */
@@ -111,7 +112,7 @@
          }
          
          if(digitalRead(nextButtonPin) == LOW){ 
-             if(digitalRead(jogModePin) == LOW){
+             if(digitalRead(jogModePin) == LOW || steps == 0){
                  cycles = 0; //this is our new home position
                  msg("jog + zero");
                  while( digitalRead(nextButtonPin) == LOW )
@@ -132,7 +133,7 @@
          if(digitalRead(backButtonPin) == LOW){ 
              digitalWrite(dirPin, 1);
              
-             if(digitalRead(jogModePin) == LOW){
+             if(digitalRead(jogModePin) == LOW || steps == 0){
                  cycles = 0; //this is our new home position
                  msg("jog(R) + zero");
                  while( digitalRead(backButtonPin) == LOW )
