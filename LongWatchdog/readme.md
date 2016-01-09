@@ -4,6 +4,22 @@ Long watchdog timer
 <pre>
 This project is to create a software-based long watchdog.
 
+Materials:
+	*ATTiny85
+	*200k linear pot
+	*400 Ohm resistor
+	*misc: perf board, header strip, wire, LED, etc..
+	
+Note: if you use to small of a pot then it may think the value was changed
+due to read variance. The pot size doesnt really matter other than that since its
+a relative reading always between 0 and 1023. Its just a matter of sensitivity and
+wether its a linear or taper pot. Likewise the resistor value isnt really critical 
+either, see what makes your LED have a comfortable glow.
+</pre>
+
+![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/LongWatchdog/final_board.jpg)
+
+<pre>
 For initial debugging I used two Arduino Uno's. 
 </pre>
 
