@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="253.1"
+   height="292.9"
+   viewBox="274 57.1 253.1 292.9"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="tiny_circuit.svg"
+   inkscape:export-filename="C:\Documents and Settings\david\Desktop\tiny_circuit.png"
+   inkscape:export-xdpi="177.91055"
+   inkscape:export-ydpi="177.91055">
+  <metadata
+     id="metadata232">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs230" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1609"
+     inkscape:window-height="958"
+     id="namedview228"
+     showgrid="false"
+     inkscape:zoom="3.307104"
+     inkscape:cx="142.21604"
+     inkscape:cy="134.18771"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <title
+     id="title4">New PCB</title>
+  <style
+     type="text/css"
+     id="style6">
+path, polyline, polygon {stroke-linejoin:round;}
+path, polyline, polygon, line {stroke-linecap:round;}
+rect, circle, ellipse, polyline, polygon, line, path {shape-rendering:crispEdges;}
+*[layerid=&quot;0&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;1&quot;] {stroke:#FF0000; fill:#FF0000;}*[layerid=&quot;2&quot;] {stroke:#0000FF; fill:#0000FF;}*[layerid=&quot;3&quot;] {stroke:#FFFF00; fill:#FFFF00;}*[layerid=&quot;4&quot;] {stroke:#808000; fill:#808000;}*[layerid=&quot;5&quot;] {stroke:#808080; fill:#808080;}*[layerid=&quot;6&quot;] {stroke:#800000; fill:#800000;}*[layerid=&quot;7&quot;] {stroke:#800080; fill:#800080;}*[layerid=&quot;8&quot;] {stroke:#AA00FF; fill:#AA00FF;}*[layerid=&quot;9&quot;] {display:none}*[layerid=&quot;10&quot;] {stroke:#FF00FF; fill:#FF00FF;}*[layerid=&quot;11&quot;] {stroke:#C0C0C0; fill:#C0C0C0;}*[layerid=&quot;12&quot;] {stroke:#FFFFFF; fill:#FFFFFF;}*[layerid=&quot;13&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;14&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;15&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;16&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;17&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;18&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;19&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;20&quot;] {stroke:#FFFFFF; FILL:#FFFFFF;}*[layerid=&quot;21&quot;] {stroke:#800000; fill:#800000;}*[layerid=&quot;22&quot;] {stroke:#008000; fill:#008000;}*[layerid=&quot;23&quot;] {stroke:#00FF00; fill:#00FF00;}*[layerid=&quot;24&quot;] {stroke:#000080; fill:#000080;}*[fill=&quot;none&quot;] {fill: none;}
+*[stroke=&quot;none&quot;] {stroke: none;}
+g[c_partid=&quot;part_pad&quot;] &gt; * + circle {fill: #000000;}
+g[c_partid=&quot;part_via&quot;] &gt; * + circle {fill: #000000;}
+</style>
+  <rect
+     x="273.42654"
+     y="57.099998"
+     width="253.10001"
+     height="292.89999"
+     id="rect8"
+     style="fill:#000000;stroke:none;shape-rendering:crispEdges" />
+  <g
+     id="g10">
+    <polyline
+       points="360 206 324 206 324 269 367 269"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline12">
+      <title
+         id="title14">S$74
+ width = 10 mil</title>
+    </polyline>
+    <polyline
+       points="367,269 367,296 369,298 468,298 471,295 470,294 470,266"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline16">
+      <title
+         id="title18">S$74
+ width = 10 mil</title>
+    </polyline>
+    <polyline
+       points="380 206 380 209 371 218 349 218 349 231 367 249"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline20">
+      <title
+         id="title22">S$81
+ width = 10 mil</title>
+    </polyline>
+    <polyline
+       points="397 239 400 236 400 206"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline24" />
+    <polyline
+       points="470 236 467 239 397 239"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline26">
+      <title
+         id="title28">S$76
+ width = 10 mil</title>
+    </polyline>
+    <polyline
+       points="367 259 366 260 350 260"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline30" />
+    <polyline
+       points="397 249 400 246 470 246"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline32" />
+    <polyline
+       points="397 259 400 256 470 256"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline34" />
+    <polyline
+       points="428 297 428 283.16"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline36" />
+    <polyline
+       points="397 269 401 273 428 273"
+       stroke-width="1"
+       fill="none"
+       c_shapetype="line"
+       c_etype="wire"
+       layerid="1"
+       id="polyline38" />
+    <g
+       c_origin="377,249"
+       c_para="package`DIP-8`sourceId`DBuM4YgyQ`"
+       c_partid="part_import_918700"
+       c_shapetype="group"
+       c_etype="pinpart"
+       layerid="1"
+       c_rotation="270"
+       id="g40">
+      <g
+         c_partid="part_pcbtext"
+         c_origin="405.1499938964844,254"
+         c_shapetype="group"
+         layerid="3"
+         c_rotation="270"
+         id="g42">
+        <path
+           c_note="note_pre"
+           c_fontSize="4.5"
+           c_text="U1"
+           d="M407.6,254 L404.54,254 L403.92,254.2 L403.51,254.61 L403.31,255.23 L403.31,255.64 L403.51,256.25 L403.92,256.66 L404.54,256.86 L407.6,256.86 M406.79,258.21 L406.99,258.62 L407.6,259.24 L403.31,259.24"
+           fill="none"
+           stroke-width="0.7"
+           id="path44" />
+      </g>
+      <polyline
+         points="372 274 392 274"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline46" />
+      <polyline
+         points="392 274 392 234"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline48" />
+      <polyline
+         points="372 274 372 234"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline50" />
+      <polyline
+         points="372 234 377 234"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline52" />
+      <polyline
+         points="387 234 392 234"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline54" />
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="367,239"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="RECT"
+         id="g56">
+        <polygon
+           points="370.15 235.85 370.15 242.15 363.85 242.15 363.85 235.85"
+           stroke-width="0"
+           id="polygon58" />
+        <circle
+           cx="367"
+           cy="239"
+           r="1.75"
+           stroke-width="0"
+           id="circle60" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="367,249"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g62">
+        <ellipse
+           cx="367"
+           cy="249"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse64" />
+        <circle
+           cx="367"
+           cy="249"
+           r="1.75"
+           stroke-width="0"
+           id="circle66" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="367,259"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g68">
+        <ellipse
+           cx="367"
+           cy="259"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse70" />
+        <circle
+           cx="367"
+           cy="259"
+           r="1.75"
+           stroke-width="0"
+           id="circle72" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="367,269"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g74">
+        <ellipse
+           cx="367"
+           cy="269"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse76" />
+        <circle
+           cx="367"
+           cy="269"
+           r="1.75"
+           stroke-width="0"
+           id="circle78" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="397,269"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g80">
+        <ellipse
+           cx="397"
+           cy="269"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse82" />
+        <circle
+           cx="397"
+           cy="269"
+           r="1.75"
+           stroke-width="0"
+           id="circle84" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="397,259"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g86">
+        <ellipse
+           cx="397"
+           cy="259"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse88" />
+        <circle
+           cx="397"
+           cy="259"
+           r="1.75"
+           stroke-width="0"
+           id="circle90" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="397,249"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g92">
+        <ellipse
+           cx="397"
+           cy="249"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse94" />
+        <circle
+           cx="397"
+           cy="249"
+           r="1.75"
+           stroke-width="0"
+           id="circle96" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="397,239"
+         layerid="11"
+         c_rotation="270"
+         c_width="6.3"
+         c_height="6.3"
+         c_shape="ELLIPSE"
+         id="g98">
+        <ellipse
+           cx="397"
+           cy="239"
+           rx="3.15"
+           ry="3.15"
+           stroke-width="0"
+           id="ellipse100" />
+        <circle
+           cx="397"
+           cy="239"
+           r="1.75"
+           stroke-width="0"
+           id="circle102" />
+        <title
+           id="title104">S$76</title>
+      </g>
+      <path
+         d="M387,234 A4.99999,4.99999 0 0,1 377,234"
+         fill="none"
+         stroke-width="1"
+         c_helper_type="arc2"
+         layerid="3"
+         id="path106" />
+    </g>
+    <g
+       c_origin="380,206"
+       c_para="package`pot`Contributor`Guest`sourceId`5bLkG20mk`"
+       c_partid="part_import_404737"
+       c_shapetype="group"
+       c_etype="pinpart"
+       layerid="1"
+       id="g108">
+      <g
+         c_partid="part_pcbtext"
+         c_origin="380.5,109.5"
+         c_shapetype="group"
+         layerid="3"
+         id="g110">
+        <path
+           c_note="note_pre"
+           c_fontSize="4.5"
+           c_text="U3"
+           d="M 380.5 107.05L380.5 110.11 L380.7 110.73 L381.11 111.14 L381.73 111.34 L382.14 111.34 L382.75 111.14 L383.16 110.73 L383.36 110.11 L383.36 107.05 M 385.12 107.05L387.37 107.05 L386.15 108.68 L386.76 108.68 L387.17 108.89 L387.37 109.09 L387.58 109.7 L387.58 110.11 L387.37 110.73 L386.96 111.14 L386.35 111.34 L385.74 111.34 L385.12 111.14 L384.92 110.93 L384.71 110.52 "
+           fill="none"
+           stroke-width="0.7"
+           id="path112" />
+      </g>
+      <polyline
+         points="350 209 410 209 410 176 350 176 350 209"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline114" />
+      <polyline
+         points="365 151 395 151"
+         stroke-width="1"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline116" />
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="360,206"
+         layerid="11"
+         c_rotation="0"
+         c_width="6"
+         c_height="6"
+         c_shape="ELLIPSE"
+         id="g118">
+        <ellipse
+           cx="360"
+           cy="206"
+           rx="3"
+           ry="3"
+           stroke-width="0"
+           id="ellipse120" />
+        <circle
+           cx="360"
+           cy="206"
+           r="1.8"
+           stroke-width="0"
+           id="circle122" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="380,206"
+         layerid="11"
+         c_rotation="0"
+         c_width="6"
+         c_height="6"
+         c_shape="ELLIPSE"
+         id="g124">
+        <ellipse
+           cx="380"
+           cy="206"
+           rx="3"
+           ry="3"
+           stroke-width="0"
+           id="ellipse126" />
+        <circle
+           cx="380"
+           cy="206"
+           r="1.8"
+           stroke-width="0"
+           id="circle128" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="400,206"
+         layerid="11"
+         c_rotation="0"
+         c_width="6"
+         c_height="6"
+         c_shape="ELLIPSE"
+         id="g130">
+        <ellipse
+           cx="400"
+           cy="206"
+           rx="3"
+           ry="3"
+           stroke-width="0"
+           id="ellipse132" />
+        <circle
+           cx="400"
+           cy="206"
+           r="1.8"
+           stroke-width="0"
+           id="circle134" />
+      </g>
+      <circle
+         cx="380"
+         cy="151"
+         r="15"
+         stroke-width="1"
+         fill="none"
+         layerid="3"
+         id="circle136" />
+      <circle
+         cx="380.5"
+         cy="150"
+         r="35.5"
+         stroke-width="1"
+         fill="none"
+         layerid="3"
+         id="circle138" />
+    </g>
+    <g
+       c_partid="part_pcbtext"
+       c_origin="333,288"
+       c_shapetype="group"
+       layerid="3"
+       id="g140">
+      <path
+         c_note="note_pre"
+         c_fontSize="4.5"
+         c_text="U4"
+         d="M 333 285.55L333 288.61 L333.2 289.23 L333.61 289.64 L334.23 289.84 L334.64 289.84 L335.25 289.64 L335.66 289.23 L335.86 288.61 L335.86 285.55 M 339.26 285.55L337.21 288.41 L340.28 288.41 M 339.26 285.55L339.26 289.84 "
+         fill="none"
+         stroke-width="0.7"
+         id="path142" />
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="350,260"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="ELLIPSE"
+       c_shapetype="group"
+       id="g144">
+      <ellipse
+         cx="350"
+         cy="260"
+         rx="3"
+         ry="3"
+         stroke-width="0"
+         id="ellipse146" />
+      <circle
+         cx="350"
+         cy="260"
+         r="1.8"
+         stroke-width="0"
+         id="circle148" />
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="350,269"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="ELLIPSE"
+       c_shapetype="group"
+       id="g150">
+      <ellipse
+         cx="350"
+         cy="269"
+         rx="3"
+         ry="3"
+         stroke-width="0"
+         id="ellipse152" />
+      <circle
+         cx="350"
+         cy="269"
+         r="1.8"
+         stroke-width="0"
+         id="circle154" />
+    </g>
+    <g
+       c_partid="part_pcbtext"
+       c_origin="470,228"
+       c_shapetype="group"
+       layerid="3"
+       id="g156">
+      <path
+         c_note="note_pre"
+         c_fontSize="4.5"
+         c_text="U2"
+         d="M470,225.55 L470,228.61 L470.2,229.23 L470.61,229.64 L471.23,229.84 L471.64,229.84 L472.25,229.64 L472.66,229.23 L472.86,228.61 L472.86,225.55 M474.42,226.57 L474.42,226.36 L474.62,225.95 L474.83,225.75 L475.24,225.55 L476.05,225.55 L476.46,225.75 L476.67,225.95 L476.87,226.36 L476.87,226.77 L476.67,227.18 L476.26,227.8 L474.21,229.84 L477.08,229.84"
+         fill="none"
+         stroke-width="0.7"
+         id="path158" />
+      <path
+         stroke="none"
+         fill-opacity="0"
+         fill="black"
+         d="M470 225.55078125L477.078125,225.55078125,477.078125,229.83984375,470,229.83984375z"
+         id="path160" />
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="470,236"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="RECT"
+       c_shapetype="group"
+       id="g162">
+      <polygon
+         points="467 233 473 233 473 239 467 239"
+         stroke-width="0"
+         id="polygon164" />
+      <circle
+         cx="470"
+         cy="236"
+         r="1.8"
+         stroke-width="0"
+         id="circle166" />
+      <title
+         id="title168">S$76</title>
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="470,246"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="ELLIPSE"
+       c_shapetype="group"
+       id="g170">
+      <ellipse
+         cx="470"
+         cy="246"
+         rx="3"
+         ry="3"
+         stroke-width="0"
+         id="ellipse172" />
+      <circle
+         cx="470"
+         cy="246"
+         r="1.8"
+         stroke-width="0"
+         id="circle174" />
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="470,256"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="ELLIPSE"
+       c_shapetype="group"
+       id="g176">
+      <ellipse
+         cx="470"
+         cy="256"
+         rx="3"
+         ry="3"
+         stroke-width="0"
+         id="ellipse178" />
+      <circle
+         cx="470"
+         cy="256"
+         r="1.8"
+         stroke-width="0"
+         id="circle180" />
+      <title
+         id="title182">S$113</title>
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="428,297"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="ELLIPSE"
+       c_shapetype="group"
+       id="g184">
+      <ellipse
+         cx="428"
+         cy="297"
+         rx="3"
+         ry="3"
+         stroke-width="0"
+         id="ellipse186" />
+      <circle
+         cx="428"
+         cy="297"
+         r="1.8"
+         stroke-width="0"
+         id="circle188" />
+    </g>
+    <g
+       c_partid="part_pad"
+       c_etype="pinpart"
+       c_origin="470,266"
+       layerid="11"
+       c_rotation="0"
+       c_width="6"
+       c_height="6"
+       c_shape="ELLIPSE"
+       id="g190">
+      <ellipse
+         cx="470"
+         cy="266"
+         rx="3"
+         ry="3"
+         stroke-width="0"
+         id="ellipse192" />
+      <circle
+         cx="470"
+         cy="266"
+         r="1.8"
+         stroke-width="0"
+         id="circle194" />
+      <title
+         id="title196">S$74</title>
+    </g>
+    <g
+       c_origin="428,278"
+       c_para="package`led_5mm_green`name`VAL**`Contributor`Smisioto`sourceId`rNHBTbtnF`"
+       c_partid="part_import_467551"
+       c_shapetype="group"
+       c_etype="pinpart"
+       layerid="1"
+       id="g198">
+      <g
+         c_partid="part_pcbtext"
+         c_origin="428.00390625,261.4784375"
+         c_shapetype="group"
+         layerid="3"
+         id="g200">
+        <path
+           c_note="note_pre"
+           c_fontSize="4.5"
+           c_text="L1"
+           d="M 428 259.02L428 263.32 M 428 263.32L430.46 263.32 M 431.81 259.84L432.22 259.64 L432.83 259.02 L432.83 263.32 "
+           fill="none"
+           stroke-width="0.7"
+           id="path202" />
+      </g>
+      <polyline
+         points="422.12 288.08 433.88 288.08"
+         stroke-width="1.19888"
+         stroke-linecap="round"
+         fill="none"
+         layerid="3"
+         id="polyline204" />
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="428,273"
+         layerid="11"
+         c_rotation="0"
+         c_width="8"
+         c_height="8"
+         c_shape="ELLIPSE"
+         id="g206">
+        <ellipse
+           cx="428"
+           cy="273"
+           rx="4"
+           ry="4"
+           stroke-width="0"
+           id="ellipse208" />
+        <circle
+           cx="428"
+           cy="273"
+           r="1.6"
+           stroke-width="0"
+           id="circle210" />
+      </g>
+      <g
+         c_partid="part_pad"
+         c_etype="pinpart"
+         c_origin="428,283.15999999999997"
+         layerid="11"
+         c_rotation="0"
+         c_width="8"
+         c_height="8"
+         c_shape="ELLIPSE"
+         id="g212">
+        <ellipse
+           cx="428"
+           cy="283.15999999999997"
+           rx="4"
+           ry="4"
+           stroke-width="0"
+           id="ellipse214" />
+        <circle
+           cx="428"
+           cy="283.15999999999997"
+           r="1.6"
+           stroke-width="0"
+           id="circle216" />
+      </g>
+      <path
+         d="M433.964,288.037 A11.6063,11.6063 0 0,0 437.957,272.116"
+         fill="none"
+         stroke-width="1.19888"
+         c_helper_type="arc2"
+         layerid="3"
+         id="path218" />
+      <path
+         d="M418.003,272.197 A11.5998,11.5998 0 0,0 422.117,288.077"
+         fill="none"
+         stroke-width="1.19888"
+         c_helper_type="arc2"
+         layerid="3"
+         id="path220" />
+      <path
+         d="M439.603,278.08 A11.6027,11.6027 0 0,0 428,266.477"
+         fill="none"
+         stroke-width="1.19888"
+         c_helper_type="arc2"
+         layerid="3"
+         id="path222" />
+      <path
+         d="M428,266.477 A11.6027,11.6027 0 0,0 416.397,278.08"
+         fill="none"
+         stroke-width="1.19888"
+         c_helper_type="arc2"
+         layerid="3"
+         id="path224" />
+      <circle
+         cx="428"
+         cy="278.08"
+         r="10"
+         stroke-width="1.19888"
+         fill="none"
+         layerid="3"
+         id="circle226" />
+    </g>
+  </g>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:121.00000381%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="482.16299"
+     y="236.45653"
+     id="text3560"
+     sodipodi:linespacing="121%"><tspan
+       sodipodi:role="line"
+       id="tspan3562"
+       x="482.16299"
+       y="236.45653"
+       style="font-size:7.5px;fill:#f2f2f2">pwr</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:121.00000381%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="480.44266"
+     y="269.14328"
+     id="text3564"
+     sodipodi:linespacing="121%"><tspan
+       sodipodi:role="line"
+       id="tspan3566"
+       x="480.44266"
+       y="269.14328"
+       style="font-size:7.5px;fill:#f2f2f2">gnd</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:121.00000381%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="481.01608"
+     y="247.92557"
+     id="text3568"
+     sodipodi:linespacing="121%"><tspan
+       sodipodi:role="line"
+       id="tspan3570"
+       x="481.01608"
+       y="247.92557"
+       style="font-size:7.5px;fill:#ffffff">reset</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:121.00000381%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="481.58954"
+     y="258.24771"
+     id="text3572"
+     sodipodi:linespacing="121%"><tspan
+       sodipodi:role="line"
+       id="tspan3574"
+       x="481.58954"
+       y="258.24771"
+       style="font-size:7.5px;fill:#ffffff">pat</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:5px;line-height:121.00000381%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="246.85678"
+     y="-379.27951"
+     id="text3576"
+     sodipodi:linespacing="121%"
+     transform="matrix(0.00453137,0.99998973,-0.99998973,0.00453137,0,0)"><tspan
+       sodipodi:role="line"
+       id="tspan3578"
+       x="246.85678"
+       y="-379.27951"
+       style="font-size:5px;fill:#ffff00">ATTiny85</tspan></text>
+</svg>
