@@ -37,12 +37,13 @@
    
 */
 
-int potPin = 3;    // select the input pin for the potentiometer
+int potPin = 3;    
 int bitePin = 2;   
 int multPin = 4;
 int patPin = 1;
 int ledPin = 0;
-uint8_t lastJumper;
+int potChangeDetect = 100; //amount of change required to trigger pot changed blink code (0-1023)
+int lastJumper;
 unsigned long lastRawVal=0;
 
 void setup() {
@@ -68,38 +69,38 @@ void loop() {
   unsigned long multiplier = 10;
   unsigned long val = analogRead(potPin);    // read the value from the sensor
   
-  uint8_t changed = (abs(lastRawVal - val) > 20) ? 1 : 0; //did they change the pot value since last time?
+  uint8_t changed = (abs(lastRawVal - val) > potChangeDetect) ? 1 : 0; //did they change the pot value since last time?
   if(changed) lastRawVal = val ;
   
   val += 300;                              //skew to put in our desired time slot range (and avoid 0)
 
-  uint8_t curJumper = digitalRead(multPin);
+  int curJumper = digitalRead(multPin);
   if( curJumper == LOW ) multiplier = 50;
   
-  if(curJumper != lastJumper){             //they changed the jumper time delay since we last checked..
+  /*if(curJumper != lastJumper){             //they changed the jumper time delay since we last checked..
       changed = true;
       lastJumper = curJumper;
-  }
+  }*/
       
   val *= multiplier;
   
   if(changed){
-      delay(300);
+      delay(500);
       for(uint8_t j=0; j<5; j++){ blinkFor(50); delay(50); }
       delay(300);
       blinkFor(val);
-      delay(300);
+      delay(500);
+      //since we ate up a bunch of time..should we hang here until next pat to sync?
   } 
   
   for(i=0; i <= val; i++){
-     if( digitalRead(patPin) == LOW ){  //pat received
+     if( digitalRead(patPin) == LOW ){  //pat received - seems to work with both both digitalWrite(LOW) and pinMode(OUTPUT) type pats
          blinkFor(100); 
          break;
      }else if(i==val){
-        digitalWrite(bitePin, LOW);     //reset time!
-        delay(10);
-        digitalWrite(bitePin, HIGH);
+        digitalWrite(bitePin, LOW);     //reset time!, goes high next loop start..
         for(uint8_t j=1; j<=2; j++){ blinkFor(400); delay(400); } 
+        break;
      }
      delay(1);
   } 

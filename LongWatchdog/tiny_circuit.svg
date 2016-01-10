@@ -39,13 +39,13 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1609"
-     inkscape:window-height="958"
+     inkscape:window-width="1895"
+     inkscape:window-height="1102"
      id="namedview228"
      showgrid="false"
-     inkscape:zoom="3.307104"
-     inkscape:cx="90.660359"
-     inkscape:cy="133.88533"
+     inkscape:zoom="2.5644699"
+     inkscape:cx="138"
+     inkscape:cy="143.5"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
@@ -65,11 +65,13 @@ g[c_partid=&quot;part_via&quot;] &gt; * + circle {fill: #000000;}
 </style>
   <rect
      x="273.72894"
-     y="93.083145"
+     y="57.083145"
      width="253.10001"
      height="292.89999"
      id="rect8"
-     style="fill:#000000;stroke:none;shape-rendering:crispEdges" />
+     style="fill:#000000;stroke:none;shape-rendering:crispEdges"
+     inkscape:export-xdpi="177.91055"
+     inkscape:export-ydpi="177.91055" />
   <polyline
      style="fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;shape-rendering:crispEdges"
      id="polyline12"
@@ -134,7 +136,8 @@ g[c_partid=&quot;part_via&quot;] &gt; * + circle {fill: #000000;}
      layerid="1"
      c_etype="wire"
      c_shapetype="line"
-     points="397 249 400 246 470 246" />
+     points="397 249 400 246 470 246"
+     transform="matrix(0.33841856,0,0,1.128581,263.05946,-30.009855)" />
   <polyline
      style="fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;shape-rendering:crispEdges"
      id="polyline34"
@@ -922,10 +925,109 @@ g[c_partid=&quot;part_via&quot;] &gt; * + circle {fill: #000000;}
      id="circle226"
      style="fill:none;stroke:#ffff00;stroke-width:1.19887996;shape-rendering:crispEdges" />
   <rect
-     style="fill:#ffff00;shape-rendering:crispEdges"
+     style="fill:#ffb380;shape-rendering:crispEdges"
      id="rect3849"
      width="12.699933"
      height="5.4428287"
      x="414.30405"
      y="269.86945" />
+  <polyline
+     style="fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;shape-rendering:crispEdges"
+     id="polyline32-1"
+     layerid="1"
+     c_etype="wire"
+     c_shapetype="line"
+     points="397 249 400 246 470 246"
+     transform="matrix(-0.33841856,0,0,-1.128581,602.43409,525.30246)" />
+  <rect
+     style="fill:#808080;shape-rendering:crispEdges"
+     id="rect4270"
+     width="18.74752"
+     height="7.559484"
+     x="423.37543"
+     y="244.16721" />
+  <rect
+     style="fill:#ececec;shape-rendering:crispEdges"
+     id="rect4272"
+     width="2.1166556"
+     height="7.559484"
+     x="426.7016"
+     y="244.16721" />
+  <rect
+     style="fill:#aa4400;shape-rendering:crispEdges"
+     id="rect4274"
+     width="1.8142762"
+     height="4.8380699"
+     x="416.72305"
+     y="269.86948" />
+  <rect
+     style="fill:#aa4400;shape-rendering:crispEdges"
+     id="rect4276"
+     width="1.8142762"
+     height="5.4428287"
+     x="420.35162"
+     y="269.86948"
+     ry="0.90713811" />
+  <rect
+     style="fill:#aa4400;shape-rendering:crispEdges"
+     id="rect4278"
+     width="1.2095175"
+     height="5.4428287"
+     x="424.28253"
+     y="269.86948"
+     ry="0.60475874" />
+  <g
+     transform="translate(-53.57932,-18.204232)"
+     style="fill:#c0c0c0;stroke:#c0c0c0"
+     id="g190-4-5"
+     c_shape="ELLIPSE"
+     c_height="6"
+     c_width="6"
+     c_rotation="0"
+     layerid="11"
+     c_origin="470,266"
+     c_etype="pinpart"
+     c_partid="part_pad">
+    <circle
+       style="stroke-width:0;shape-rendering:crispEdges"
+       r="3"
+       id="ellipse192-5-6"
+       cy="266"
+       cx="470" />
+    <circle
+       style="fill:#000000;stroke-width:0;shape-rendering:crispEdges"
+       id="circle194-7-6"
+       r="1.8"
+       cy="266"
+       cx="470" />
+    <title
+       id="title196-2-3">S$74</title>
+  </g>
+  <g
+     transform="translate(-21.829488,-18.204232)"
+     style="fill:#c0c0c0;stroke:#c0c0c0"
+     id="g190-4-3"
+     c_shape="ELLIPSE"
+     c_height="6"
+     c_width="6"
+     c_rotation="0"
+     layerid="11"
+     c_origin="470,266"
+     c_etype="pinpart"
+     c_partid="part_pad">
+    <circle
+       style="stroke-width:0;shape-rendering:crispEdges"
+       r="3"
+       id="ellipse192-5-0"
+       cy="266"
+       cx="470" />
+    <circle
+       style="fill:#000000;stroke-width:0;shape-rendering:crispEdges"
+       id="circle194-7-8"
+       r="1.8"
+       cy="266"
+       cx="470" />
+    <title
+       id="title196-2-9">S$74</title>
+  </g>
 </svg>

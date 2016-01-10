@@ -16,15 +16,15 @@ a relative reading always between 0 and 1023. Its just a matter of sensitivity a
 wether its a linear or taper pot. Likewise the resistor value isnt really critical 
 either, see what makes your LED have a comfortable glow.
 
-Note2: there are two techniques available for patting the dog. The first one is 
-using a digital write. The second one is used with the 555 watchdog circuits. 
-These ones set the watchdog pin to a high impedence state when not in use (or to 
-pat the dog) to drain the capicator and reset the timeout. Current code using digitalRead
-appears to be compatiable with this technique as well. (Even if I have to switch 
-to analogRead our existing AtTiny circuit is still ok just a a change to analogRead
-and pin swap in the code)
+Note2: the diode between the tiny and reset line allows you to upload sketches to the
+arduino without having to remove the connection wire. 
 
+Note3: i commented out the jumper change detection, seems like it was causing a 
+bug not sure why..
 
+Note4: I think I want to add one more feature, an enable/disable line so you dont always
+need to pat it, but can limit it to certain problem areas of code such as when using wifi. 
+I am out of pins on the tiny though as is..transistor on power/gnd from host?
 </pre>
 
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/LongWatchdog/final_board.jpg)
