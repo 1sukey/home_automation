@@ -42,6 +42,7 @@ void loop() {
   
   int i=0;
   for(i=0; i <= val; i++){
+     //if( analogRead(patPin) < 200 ){
      if( digitalRead(patPin) == LOW ){
          Serial.println("Good boy!"); 
          break;

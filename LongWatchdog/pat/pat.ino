@@ -11,7 +11,7 @@ void setup() {
 
 void patDog(){
      digitalWrite(patPin, LOW);
-     delay(10);
+     delay(200);
      digitalWrite(patPin, HIGH);
 }
 
