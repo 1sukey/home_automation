@@ -10,21 +10,17 @@ Materials:
 	*400 Ohm resistor
 	*misc: perf board, header strip, wire, LED, etc..
 	
-Note: if you use to small of a pot then it may think the value was changed
-due to read variance. The pot size doesnt really matter other than that since its
-a relative reading always between 0 and 1023. Its just a matter of sensitivity and
-wether its a linear or taper pot. Likewise the resistor value isnt really critical 
-either, see what makes your LED have a comfortable glow.
+Notes: the diode between the tiny and reset line allows you to upload sketches to the
+arduino without having to remove the reset connection wire. 
 
-Note2: the diode between the tiny and reset line allows you to upload sketches to the
-arduino without having to remove the connection wire. 
+older versions had an optional time multiplier jumper. I have removed this so I could use
+the pin as an optional disable line. The circuit itself is still fine, no rewiring, just 
+use the old jumper header with a female connector.
 
-Note3: i commented out the jumper change detection, seems like it was causing a 
-bug not sure why..
+An onboard pot allows you to adjust the time delay for the timeout. 
+By default this is set between 9 and 90 seconds. you can scale this differently 
+by altering the math.
 
-Note4: I think I want to add one more feature, an enable/disable line so you dont always
-need to pat it, but can limit it to certain problem areas of code such as when using wifi. 
-I am out of pins on the tiny though as is..transistor on power/gnd from host?
 </pre>
 
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/LongWatchdog/final_board.jpg)
@@ -42,13 +38,6 @@ The final version is designed to run on a $2.50 ATTiny85.
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/LongWatchdog/tiny_watchdog_bb.png)
 
 <pre>
-An onboard pot allows you to adjust the time delay for the timeout. 
-By default this is set between 3 and 30 seconds. you can scale this differently 
-by altering the math.
-
-If in a jumper pin is brought to ground, then the time delay range
-is now set between 15 seconds and 2 1/2 minutes. You can calibrate a scale
-based on the serial output and draw time markers on a dial around the pot.
 
 The watchdog is powered from the parent device and has four exposed header pins
 in line, it is easily breadboardable and very easy to wire. 
@@ -66,12 +55,13 @@ The code impact on your project to pat the dog is extremely small to use the dev
 <pre>
 The blink code behaviors are as follows for the ATTiny build:
 
-if it detects the pot value has changed (by at least 20) then it will
-flash the led 4 times quickly, followed by an led on duration of the real
-time value it will use before it resets the parent arduino.
+* if it detects the pot value has changed then it will flash the led 4 times 
+quickly, followed by an led on duration of the real time value it will use 
+before it resets the parent arduino.
       
-everytime it receives a pat, the led will give a brief flicker
-if it has to reset the arduino it will do so then give two slow flashs to led
+* everytime it receives a pat, the led will give a brief flicker
+
+* if it has to reset the arduino it will do so then give two slow flashs to led
 
 Currently I've been using a 555 timer-based external watchdog, that works well
 but is rather expensive at $16. 
