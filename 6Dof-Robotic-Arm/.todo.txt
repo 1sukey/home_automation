@@ -1,0 +1,10 @@
+
+- ability to record points and sequences
+- ability to replay saved sequences of commands from PC controller.
+- implement servos 4, 6 
+- create a gripper or tool head for useful action/tests
+- create X/y/z  motion control library ?
+- perform draw tests
+- perform repeatability tests
+- perform agility tests
+
