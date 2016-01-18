@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				WarningLevel="3"
 				DebugInformationFormat="4"
-				ForcedIncludeFiles="C:\Documents and Settings\david\Desktop\ArmCode\controller\Visual Micro\.controller.vsarduino.h"
+				ForcedIncludeFiles="D:\_code\home_automation\6Dof-Robotic-Arm\controller\Visual Micro\.controller.vsarduino.h"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"

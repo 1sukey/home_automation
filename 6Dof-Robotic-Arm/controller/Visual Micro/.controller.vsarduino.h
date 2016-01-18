@@ -41,10 +41,13 @@ extern "C" void __cxa_pure_virtual() {;}
 
 //
 //
-void doMove(int index, Servo *s, int pos, int raw, int *lastPos);
+void JoyStickMode();
+void SerialControlMode();
+Servo* getServo(int index);
+void doMove(int index, int pos, int raw);
 void dbg(int index, int raw, int pos);
 
 #include "D:\arduino-1.5.8\hardware\arduino\avr\cores\arduino\arduino.h"
 #include "D:\arduino-1.5.8\hardware\arduino\avr\variants\standard\pins_arduino.h" 
-#include "c:\Documents and Settings\david\Desktop\ArmCode\controller\controller.ino"
+#include "d:\_code\home_automation\6Dof-Robotic-Arm\controller\controller.ino"
 #endif

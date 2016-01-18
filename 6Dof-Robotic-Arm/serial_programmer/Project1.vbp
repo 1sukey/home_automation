@@ -1,0 +1,45 @@
+Type=Exe
+Form=Form1.frm
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
+Object={648A5603-2C6E-101B-82B6-000000000014}#1.1#0; MSCOMM32.OCX
+Module=modMain; modMain.bas
+Class=clsSerial; clsSerial.cls
+Class=clsFileStream; clsFileStream.cls
+Class=CFileSystem2; CFileSystem2.cls
+Class=clsCmnDlg2; clsCmnDlg2.cls
+IconForm="Form1"
+Startup="Sub Main"
+HelpFile=""
+Title="arm_programmer"
+ExeName32="programmer.exe"
+Command32=""
+Name="arm_programmer"
+HelpContextID="0"
+CompatibleMode="0"
+MajorVer=1
+MinorVer=0
+RevisionVer=9
+AutoIncrementVer=1
+ServerSupportFiles=0
+VersionCompanyName="sandsprite"
+CompilationType=0
+OptimizationType=0
+FavorPentiumPro(tm)=0
+CodeViewDebugInfo=0
+NoAliasing=0
+BoundsCheck=0
+OverflowCheck=0
+FlPointCheck=0
+FDIVCheck=0
+UnroundedFP=0
+StartMode=0
+Unattended=0
+Retained=0
+ThreadPerObject=0
+MaxNumberOfThreads=1
+
+[MS Transaction Server]
+AutoRefresh=1
+
+[fastBuild]
+fullPath=D:\_code\home_automation\6Dof-Robotic-Arm\serial_programmer\programmer.exe
