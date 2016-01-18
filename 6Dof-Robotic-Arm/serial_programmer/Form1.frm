@@ -2,19 +2,34 @@ VERSION 5.00
 Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
 Begin VB.Form Form1 
    Caption         =   "Robotic Arm Serial Record/Replay  http://sandsprite.com"
-   ClientHeight    =   5385
+   ClientHeight    =   5760
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   10800
+   ClientWidth     =   7530
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5385
-   ScaleWidth      =   10800
+   ScaleHeight     =   5760
+   ScaleWidth      =   7530
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdClearList 
+      Caption         =   "Clear List"
+      Height          =   330
+      Left            =   6390
+      TabIndex        =   18
+      Top             =   2700
+      Width           =   1005
+   End
+   Begin VB.ListBox List1 
+      Height          =   2595
+      Left            =   180
+      TabIndex        =   17
+      Top             =   3060
+      Width           =   7215
+   End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   3000
-      Left            =   4800
-      Top             =   420
+      Left            =   4860
+      Top             =   90
    End
    Begin VB.TextBox txtScript 
       Height          =   285
@@ -36,7 +51,7 @@ Begin VB.Form Form1
       Height          =   315
       Left            =   6540
       TabIndex        =   12
-      Top             =   1740
+      Top             =   1980
       Width           =   855
    End
    Begin VB.CommandButton cmdReplay 
@@ -84,6 +99,14 @@ Begin VB.Form Form1
       TabIndex        =   0
       Top             =   135
       Width           =   7305
+      Begin VB.CheckBox chkLogResponse 
+         Caption         =   "Log Response"
+         Height          =   195
+         Left            =   4365
+         TabIndex        =   16
+         Top             =   450
+         Width           =   1500
+      End
       Begin VB.CommandButton Command1 
          Caption         =   "about"
          Height          =   375
@@ -100,8 +123,8 @@ Begin VB.Form Form1
          Width           =   2400
       End
       Begin MSCommLib.MSComm MSComm1 
-         Left            =   5130
-         Top             =   225
+         Left            =   5175
+         Top             =   -45
          _ExtentX        =   1005
          _ExtentY        =   1005
          _Version        =   393216
@@ -183,6 +206,7 @@ Enum responses
     r_error = 2
     r_timeout = 3
     r_complete = 4
+    r_userabort = 5
 End Enum
 
 Const MAX_LONG As Long = 2147483468
@@ -243,6 +267,7 @@ Private Sub cmdRecord_Click()
     
     If fstream.FileHandle <> 0 Then fstream.fClose
     
+    List1.Clear
     If fso.FileExists(txtSaveAs) Then Kill txtSaveAs
     fstream.fOpen txtSaveAs, otappend
     
@@ -260,6 +285,7 @@ Private Sub cmdReplay_Click()
     End If
     
     Dim i As Long
+    List1.Clear
     
     tmp = Split(fso.ReadFile(txtScript), vbCrLf)
     For Each t In tmp
@@ -269,17 +295,16 @@ Private Sub cmdReplay_Click()
                 
         recvd = r_waiting
         MSComm1.Output = t & vbLf
-        Sleep 300
         
-'        Timer1.Enabled = False
-'        Timer1.Enabled = True
-'
-'        While recvd = r_waiting
-'            DoEvents
-'            Sleep 10
-'        Wend
-'
-'        If recvd = r_timeout Then Exit For
+        Timer1.Enabled = False
+        Timer1.Enabled = True
+
+        While recvd = r_waiting
+            DoEvents
+            Sleep 10
+        Wend
+
+        If recvd = r_timeout Then Exit For
         
         i = i + 1
     Next
@@ -298,6 +323,7 @@ Function getStatus(r As responses)
     If r = r_ok Then getStatus = "ok"
     If r = r_timeout Then getStatus = "timeout"
     If r = r_waiting Then getStatus = "waiting"
+    If r = r_userabort Then getStatus = "user abort"
 End Function
 
 Private Sub cmdSave_Click()
@@ -309,6 +335,7 @@ End Sub
 Private Sub cmdStop_Click()
     On Error Resume Next
     fstream.fClose
+    recvd = r_userabort
 End Sub
 
 Private Sub Command1_Click()
@@ -331,6 +358,9 @@ Private Sub Form_Load()
     Set serial = New clsSerial
     serial.Configure MSComm1
     LoadPorts
+    
+    Const test = "c:\test.txt"
+    If fso.FileExists(test) Then txtScript = test
 
 End Sub
 
@@ -373,6 +403,11 @@ Private Sub serial_MessageReceived(msg As String)
     msg = Replace(msg, vbCr, Empty)
     msg = Replace(msg, vbLf, Empty)
     txtData = msg
+    
+    If chkLogResponse.value = 1 Then
+        If List1.ListCount > 1000 Then List1.Clear
+        List1.AddItem "Serial Msg: " & msg
+    End If
     
     If msg = "OK" Then
         recvd = r_ok

@@ -60,6 +60,8 @@ void setup() {
 	
 	pinMode(modeSwitchPin, INPUT_PULLUP); //defaults to joystick mode..
 
+	if(digitalRead(modeSwitchPin) == LOW) for(int i=2; i < 6; i++) doMove(i,40,0); //init to safe position
+
 }
 
 void loop() {
@@ -121,18 +123,35 @@ void SerialControlMode(){
 
 	int i=1;
 	int pos[7] = {0, 0, 0, 0, 0, 0, 0};
+	char tmp[100];
+	char *t = &tmp[0];
 
 	//expected input 6 csv numbers for servo positions \n
 	//0,0,0,0,0,0\n
-	if( !Serial.available() ){
-		delay(100); 
+	while(!Serial.available()){
+		delay(1);
+		if(digitalRead(modeSwitchPin) == HIGH) return; //they entered joystick mode..
+	}
+        
+	n = Serial.readStringUntil('\n');
+	
+	if(n.length() >= 100){
+		Serial.println("Invalid to long!");
 		return;
 	}
 
-	while( Serial.available() ){
-		n = Serial.readStringUntil(',');
-		pos[i++] = atoi(n.c_str());
-		if(i==7) break;
+	strcpy(tmp,n.c_str());
+
+	while(i < 7){
+	    pos[i] = atoi(t);
+	    i++;
+		if(i!=7){
+			while(*t != ','){
+				if(*t == 0){i=7; break;}
+				t++;
+			}
+		}
+		t++;
 	}
 
 	if(i!=7){
@@ -142,8 +161,6 @@ void SerialControlMode(){
 		return;
 	}
 
-	Serial.readStringUntil('\n');
-
 	if(debug){
 		Serial.print("Parsed input: ");
 		for(i=1; i<=6; i++){
@@ -152,8 +169,15 @@ void SerialControlMode(){
 		}
 	}
 
+	bool isEmpty = true;
 	for(i=1; i<=6; i++){
-		doMove(i,pos[i],0);
+		if(pos[i] != 0){ isEmpty = false; break; }
+	}
+
+	if(!isEmpty){
+		for(i=1; i<=6; i++){
+			doMove(i,pos[i],0);
+		}
 	}
 
 	Serial.println("OK");
