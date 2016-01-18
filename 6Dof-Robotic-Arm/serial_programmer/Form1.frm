@@ -2,28 +2,45 @@ VERSION 5.00
 Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
 Begin VB.Form Form1 
    Caption         =   "Robotic Arm Serial Record/Replay  http://sandsprite.com"
-   ClientHeight    =   5760
+   ClientHeight    =   5265
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   7530
+   ClientWidth     =   8505
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5760
-   ScaleWidth      =   7530
+   ScaleHeight     =   5265
+   ScaleWidth      =   8505
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdSave 
+      Caption         =   "Open"
+      Height          =   270
+      Index           =   1
+      Left            =   7680
+      TabIndex        =   17
+      Top             =   1800
+      Width           =   720
+   End
+   Begin VB.CommandButton cmdPause 
+      Caption         =   "Pause"
+      Height          =   315
+      Left            =   6480
+      TabIndex        =   16
+      Top             =   2160
+      Width           =   855
+   End
    Begin VB.CommandButton cmdClearList 
       Caption         =   "Clear List"
       Height          =   330
-      Left            =   6390
-      TabIndex        =   18
-      Top             =   2700
+      Left            =   135
+      TabIndex        =   15
+      Top             =   2160
       Width           =   1005
    End
    Begin VB.ListBox List1 
       Height          =   2595
       Left            =   180
-      TabIndex        =   17
-      Top             =   3060
-      Width           =   7215
+      TabIndex        =   14
+      Top             =   2565
+      Width           =   8205
    End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
@@ -31,58 +48,46 @@ Begin VB.Form Form1
       Left            =   4860
       Top             =   90
    End
-   Begin VB.TextBox txtScript 
-      Height          =   285
-      Left            =   1485
-      TabIndex        =   14
-      Top             =   2160
-      Width           =   3480
-   End
-   Begin VB.CommandButton cmdBrowse2 
-      Caption         =   "..."
-      Height          =   330
-      Left            =   5040
-      TabIndex        =   13
-      Top             =   2160
-      Width           =   420
-   End
    Begin VB.CommandButton cmdStop 
       Caption         =   "Stop"
       Height          =   315
-      Left            =   6540
+      Left            =   7515
       TabIndex        =   12
-      Top             =   1980
+      Top             =   2160
       Width           =   855
    End
    Begin VB.CommandButton cmdReplay 
       Caption         =   "Replay"
       Height          =   330
-      Left            =   5520
+      Left            =   5355
       TabIndex        =   11
       Top             =   2160
       Width           =   915
    End
    Begin VB.CommandButton cmdSave 
-      Caption         =   "..."
-      Height          =   330
-      Left            =   5085
+      Caption         =   "Save"
+      Height          =   270
+      Index           =   0
+      Left            =   6900
       TabIndex        =   10
-      Top             =   1755
-      Width           =   420
+      Top             =   1800
+      Width           =   720
    End
-   Begin VB.TextBox txtSaveAs 
+   Begin VB.TextBox txtScript 
       Height          =   285
       Left            =   1530
+      OLEDropMode     =   1  'Manual
       TabIndex        =   9
+      Text            =   "supports drag and drop"
       Top             =   1755
-      Width           =   3480
+      Width           =   5340
    End
    Begin VB.CommandButton cmdRecord 
       Caption         =   "Record"
       Height          =   330
-      Left            =   5535
+      Left            =   4140
       TabIndex        =   7
-      Top             =   1755
+      Top             =   2160
       Width           =   915
    End
    Begin VB.TextBox txtData 
@@ -90,7 +95,7 @@ Begin VB.Form Form1
       Left            =   1530
       TabIndex        =   6
       Top             =   1260
-      Width           =   5775
+      Width           =   6855
    End
    Begin VB.Frame Frame1 
       Caption         =   "Arduino COM Port Connection"
@@ -98,21 +103,21 @@ Begin VB.Form Form1
       Left            =   135
       TabIndex        =   0
       Top             =   135
-      Width           =   7305
+      Width           =   8250
       Begin VB.CheckBox chkLogResponse 
-         Caption         =   "Log Response"
+         Caption         =   "Log"
          Height          =   195
-         Left            =   4365
-         TabIndex        =   16
-         Top             =   450
-         Width           =   1500
+         Left            =   5895
+         TabIndex        =   13
+         Top             =   405
+         Width           =   645
       End
       Begin VB.CommandButton Command1 
          Caption         =   "about"
          Height          =   375
-         Left            =   5850
+         Left            =   6885
          TabIndex        =   4
-         Top             =   360
+         Top             =   315
          Width           =   1185
       End
       Begin VB.ComboBox CboPort 
@@ -157,21 +162,13 @@ Begin VB.Form Form1
          Width           =   780
       End
    End
-   Begin VB.Label Label4 
-      Caption         =   "Saved Script"
-      Height          =   240
-      Left            =   360
-      TabIndex        =   15
-      Top             =   2205
-      Width           =   1005
-   End
    Begin VB.Label Label3 
-      Caption         =   "Save To"
+      Caption         =   "File"
       Height          =   240
-      Left            =   765
+      Left            =   1035
       TabIndex        =   8
       Top             =   1800
-      Width           =   645
+      Width           =   375
    End
    Begin VB.Label Label1 
       Caption         =   "Data Received:"
@@ -199,6 +196,8 @@ Dim fstream As New clsFileStream
 Dim dlg As New clsCmnDlg2
 Dim movements As Long
 Dim recvd As responses
+Dim lastCmd As Long
+Dim paused As Boolean
 
 Enum responses
     r_ok = 1
@@ -210,8 +209,10 @@ Enum responses
 End Enum
 
 Const MAX_LONG As Long = 2147483468
+Const MAX_DELAY As Long = 10000 '10sec
 
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Private Declare Function GetTickCount Lib "kernel32" () As Long
 
 
 Private Sub CboPort_Click()
@@ -239,63 +240,139 @@ Private Sub CboPort_Click()
     
 End Sub
 
-Function validate() As Boolean
-    
-    On Error Resume Next
-    Dim uid As Long
-    
-    If Not MSComm1.PortOpen Then
-        MsgBox "you must first select an open com Port from the list"
-        Exit Function
-    End If
-    
-     
-End Function
+Private Sub cmdClearList_Click()
+    List1.Clear
+End Sub
 
-Private Sub cmdBrowse2_Click()
-    f = dlg.OpenDialog(AllFiles, , , Me.hWnd)
+'Function validate() As Boolean
+'
+'    On Error Resume Next
+'    Dim uid As Long
+'
+'    If Not MSComm1.PortOpen Then
+'        MsgBox "you must first select an open com Port from the list"
+'        Exit Function
+'    End If
+'
+'    If Err.Description <> 0 Then MsgBox Err.Description
+'
+'End Function
+
+Private Sub cmdSave_Click(Index As Integer)
+    If Index = 1 Then
+        f = dlg.OpenDialog(AllFiles, , , Me.hWnd)
+    Else
+        f = dlg.SaveDialog(AllFiles, , , , Me.hWnd)
+    End If
     If Len(f) = 0 Then Exit Sub
     txtScript = f
 End Sub
 
+Private Sub cmdPause_Click()
+    If cmdPause.Caption = "Pause" Then
+        paused = True
+        cmdPause.Caption = "Resume"
+        Me.Caption = "Paused"
+    Else
+        paused = False
+        cmdPause.Caption = "Pause"
+        Me.Caption = IIf(fstream.FileHandle <> 0, "Recording", "Running script..")
+    End If
+End Sub
+
 Private Sub cmdRecord_Click()
+            
+    'If Not validate Then Exit Sub
     
-    If Len(txtSaveAs) = 0 Then
-        cmdSave_Click
-        If Len(txtSaveAs) = 0 Then Exit Sub
+    If recvd <> r_complete And recvd <> r_userabort Then
+        MsgBox "A replay is still active"
+        Exit Sub
+    End If
+    
+    If Len(txtScript) = 0 Then
+        cmdSave_Click 0
+        If Len(txtScript) = 0 Then Exit Sub
     End If
     
     If fstream.FileHandle <> 0 Then fstream.fClose
     
     List1.Clear
-    If fso.FileExists(txtSaveAs) Then Kill txtSaveAs
-    fstream.fOpen txtSaveAs, otappend
+    If fso.FileExists(txtScript) Then Kill txtScript
+    fstream.fOpen txtScript, otappend
     
     If fstream.FileHandle = 0 Then
         MsgBox "Failed to open file? Error:" & fstream.ErrMsg, vbInformation
+    Else
+        Me.Caption = "Recording live motion..."
     End If
     
 End Sub
 
 Private Sub cmdReplay_Click()
-
+    
+    Dim tstamp As Long, stStamp As String, tElapsed As Long
+    Dim i As Long, a As Long
+    
+    recvd = r_complete
+    If fstream.FileHandle <> 0 Then
+        MsgBox "A recording is still active"
+        Exit Sub
+    End If
+    
+    'If Not validate Then Exit Sub
+    
     If Len(txtScript) = 0 Then
-        cmdBrowse2_Click
+        cmdSave_Click 1
         If Len(txtScript) = 0 Then Exit Sub
     End If
     
-    Dim i As Long
+    lastCmd = GetTickCount()
     List1.Clear
     
     tmp = Split(fso.ReadFile(txtScript), vbCrLf)
     For Each t In tmp
+    
+        recvd = r_waiting
+        
+        While paused
+            DoEvents
+            Sleep 10
+            If recvd <> r_waiting Then Exit For
+        Wend
         
         Me.Caption = "Script command: " & i & "/" & UBound(tmp)
         Me.Refresh
                 
-        recvd = r_waiting
+        t = Trim(t)
+        If Len(t) = 0 Then GoTo nextone
+        
+        a = InStrRev(t, ",")
+        If a < 1 Then GoTo nextone
+        
+        stStamp = Mid(t, a + 1) 'extract time stamp as string
+        t = Mid(t, 1, a - 1)      'remove the timstamp from the corrds
+        tstamp = CLng(stStamp)  'this could throw an error if bad data not caught..
+        
         MSComm1.Output = t & vbLf
         
+        tElapsed = GetTickCount() - lastCmd
+        If tElapsed < tstamp Then
+            tdelay = tstamp - tElapsed
+            If tdelay < MAX_DELAY Then
+                Me.Caption = "Sleeping for " & tdelay & "  Step: " & i & "/" & UBound(tmp)
+                'List1.AddItem Me.Caption
+                Me.Refresh
+                While tdelay > 1
+                    DoEvents
+                    Sleep 1
+                    tElapsed = GetTickCount() - lastCmd
+                    tdelay = tstamp - tElapsed
+                    If recvd = r_userabort Or recvd = r_timeout Then Exit For
+                Wend
+                lastCmd = GetTickCount()
+            End If
+        End If
+          
         Timer1.Enabled = False
         Timer1.Enabled = True
 
@@ -305,15 +382,16 @@ Private Sub cmdReplay_Click()
         Wend
 
         If recvd = r_timeout Then Exit For
+        If recvd = r_userabort Then Exit For
         
+nextone:
         i = i + 1
     Next
 
     Timer1.Enabled = False
-    
     If (i = UBound(tmp) + 1) Then recvd = r_complete
-     
     Me.Caption = "Script Complete! Status: " & getStatus(recvd) & "  Step: " & i & "/" & UBound(tmp)
+    recvd = r_complete
     
 End Sub
 
@@ -326,16 +404,11 @@ Function getStatus(r As responses)
     If r = r_userabort Then getStatus = "user abort"
 End Function
 
-Private Sub cmdSave_Click()
-    f = dlg.SaveDialog(AllFiles, , , , Me.hWnd)
-    If Len(f) = 0 Then Exit Sub
-    txtSaveAs = f
-End Sub
-
 Private Sub cmdStop_Click()
     On Error Resume Next
     fstream.fClose
     recvd = r_userabort
+    Me.Caption = "Stopped"
 End Sub
 
 Private Sub Command1_Click()
@@ -347,20 +420,15 @@ Private Sub Command1_Click()
 End Sub
 
 
-'Private Sub Command4_Click()
-'    On Error Resume Next
-'    List1.AddItem "showcfg:"
-'    MSComm1.Output = "showcfg:" & vbLf
-'End Sub
-
 Private Sub Form_Load()
          
     Set serial = New clsSerial
     serial.Configure MSComm1
     LoadPorts
     
-    Const test = "c:\test.txt"
-    If fso.FileExists(test) Then txtScript = test
+    recvd = r_complete
+    'Const test = "c:\test.txt"
+    'If fso.FileExists(test) Then txtScript = test
 
 End Sub
 
@@ -398,8 +466,11 @@ Private Sub lblRefresh_Click()
     Screen.MousePointer = vbDefault
 End Sub
 
+
 Private Sub serial_MessageReceived(msg As String)
 
+    Dim tstamp As Long
+    
     msg = Replace(msg, vbCr, Empty)
     msg = Replace(msg, vbLf, Empty)
     txtData = msg
@@ -408,7 +479,7 @@ Private Sub serial_MessageReceived(msg As String)
         If List1.ListCount > 1000 Then List1.Clear
         List1.AddItem "Serial Msg: " & msg
     End If
-    
+
     If msg = "OK" Then
         recvd = r_ok
         Exit Sub
@@ -419,8 +490,15 @@ Private Sub serial_MessageReceived(msg As String)
         Exit Sub
     End If
     
+    If paused Then Exit Sub
+    
     If fstream.FileHandle <> 0 Then
-        fstream.WriteLine msg
+    
+        tstamp = GetTickCount() - lastCmd
+        If tstamp < 0 Then tstamp = 0
+        lastCmd = GetTickCount()
+        
+        fstream.WriteLine msg & "," & tstamp
         
         If movements = MAX_LONG Then movements = 0
         movements = movements + 1
@@ -455,4 +533,9 @@ End Function
 Private Sub Timer1_Timer()
     recvd = r_timeout
     MsgBox "Script Timeout! No response, are you in serial mode on microcontroller?"
+End Sub
+
+Private Sub txtScript_OLEDragDrop(Data As DataObject, Effect As Long, Button As Integer, Shift As Integer, x As Single, Y As Single)
+    On Error Resume Next
+    txtScript = Data.files(1)
 End Sub

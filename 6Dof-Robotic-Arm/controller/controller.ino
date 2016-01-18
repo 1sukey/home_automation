@@ -60,6 +60,7 @@ void setup() {
 	
 	pinMode(modeSwitchPin, INPUT_PULLUP); //defaults to joystick mode..
 
+	//todo: safe neutral pos: 93,121,37,0,86,0
 	if(digitalRead(modeSwitchPin) == LOW) for(int i=2; i < 6; i++) doMove(i,40,0); //init to safe position
 
 }
