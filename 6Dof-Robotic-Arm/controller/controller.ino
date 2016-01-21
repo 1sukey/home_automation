@@ -38,8 +38,14 @@ int lastPos[7] = {0, 0, 0, 0, 0, 0, 0};
 
 //					x, 1,  2,   3,  4, 5, 6  you must set these to your system..
 int calibration[7] = {0, 0, -20, -12, 0, 0, 0};
+int neutralPos[7]  = {0,93,121,37,80,86,80};
 bool moved = false;
 bool debug = false;
+bool inJoyStickMode = true;
+
+void gotoNeutralPos(){
+	for(int i=1; i<=6; i++) doMove(i, neutralPos[i],0);
+}
 
 void setup() {
 
@@ -60,17 +66,21 @@ void setup() {
 	
 	pinMode(modeSwitchPin, INPUT_PULLUP); //defaults to joystick mode..
 
-	//todo: safe neutral pos: 93,121,37,0,86,0
-	if(digitalRead(modeSwitchPin) == LOW) for(int i=2; i < 6; i++) doMove(i,40,0); //init to safe position
-
 }
 
 void loop() {
 	
-	if(digitalRead(modeSwitchPin) == HIGH)
+	if(digitalRead(modeSwitchPin) == HIGH){
+		inJoyStickMode = true;
 		JoyStickMode();
-	else
+	}
+	else{
+		if(inJoyStickMode){
+			inJoyStickMode = false;
+			gotoNeutralPos();
+		}
 		SerialControlMode();
+	}
 
 }
 
@@ -88,9 +98,9 @@ void JoyStickMode(){
 	int pos1 = map(raw1, 0, 1023, 0, 180);
 	int pos2 = map(raw2, 0, 1023, 180, 0); //note i accidently swapped which side my +/- were on so I have to swap the mapping..(arm was acting in reverse of my motion)
 	int pos3 = map(raw3, 0, 1023, 0, 180);
-	int pos4 = 0; //map(raw4, 0, 1023, 0, 180); //not implemented in joystick yet
+	int pos4 = map(raw4, 0, 1023, 0, 180); //not implemented in joystick yet
 	int pos5 = map(raw5, 0, 1023, 0, 180);
-	int pos6 = 0; //map(raw6, 0, 1023, 0, 180); //not implemented in joystick yet
+	int pos6 = map(raw6, 0, 1023, 0, 180); //not implemented in joystick yet
 	
 	if(abs(pos1 - lastPos[1]) > 2) doMove(1, pos1, raw1);
 	if(abs(pos2 - lastPos[2]) > 2) doMove(2, pos2, raw2);
@@ -177,7 +187,7 @@ void SerialControlMode(){
 
 	if(!isEmpty){
 		for(i=1; i<=6; i++){
-			doMove(i,pos[i],0);
+			if( pos[i] != lastPos[i] ) doMove(i,pos[i],0);
 		}
 	}
 

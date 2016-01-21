@@ -15,6 +15,8 @@ as a joystick. Potentiomenters are installed in the same places the servos
 are on the mechanical arm to give accurate motion control. 
 
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/6Dof-Robotic-Arm/robot_arm_joystick.jpg)
+
+![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/6Dof-Robotic-Arm/shield.jpg)
  
 
 Build Videos:
