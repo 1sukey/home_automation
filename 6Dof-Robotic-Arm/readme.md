@@ -16,7 +16,7 @@ are on the mechanical arm to give accurate motion control.
 
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/6Dof-Robotic-Arm/robot_arm_joystick.jpg)
 
-![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/6Dof-Robotic-Arm/shield.jpg)
+![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/6Dof-Robotic-Arm/robot_arm_servo_shield.jpg)
  
 
 Build Videos:
