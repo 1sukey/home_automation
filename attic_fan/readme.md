@@ -14,8 +14,8 @@ hardware:
           * DHT22 temp/humidity sensor                : $10
           * micro hobby servo amazon part B001CFUBN8  : $5 
           * arduino uno clone amazon part B00E5WJSHK  : $13
-          * potentiometer, wire, etc..                ------
-                                                    ~ $45
+          * potentiometer, wire, NPN transistor etc. ------
+                                                      ~ $45
           
           you could shrink this down allot cost wise if you eliminate the dht22 and oled screen, then
           you can use an attiny + servo + pot (3+5+1). I probably will in time, but first I want the feedback
@@ -28,12 +28,13 @@ wiring:
          * dht22 on pin 2
          * OLED  on I2C (address 0x3c)
          * pot   on pin A0
+         * NPN Transistor: base on pin 11, collector +5, emitter to servo power wire
 
 notes:   
 -----------------------------------
-          oleds can burn in, do not leave on, I am just going to battery 
-          power and turn on to take spot checks.
+          oleds can burn in, do not leave on, going to battery power and turn on to take spot checks. 
+          Transistor elimniates power on jitter and conserves battery power when idle
          
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/attic_fan/wiring.png)
 
-
+![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/attic_fan/attic_shield.jpg)

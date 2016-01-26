@@ -1,7 +1,7 @@
 /*
 author: david zimmer
 site: http://sandsprite.com
-license: none
+license: free
 
 purpose:
           display attic temp/humi/dew point, and remotly set a physical knob that determins when 
@@ -15,7 +15,7 @@ hardware: OLED screen Amazon part number: b00o2llt30: $15  ( 128x64 pixels, I2c 
           DHT22 temp/humidity sensor                : $10
           micro hobby servo amazon part B001CFUBN8  : $5 
           arduino uno clone amazon part B00E5WJSHK  : $13
-          potentiometer, wire, etc..                ------
+          potentiometer, wire, NPN transistor, etc ------
                                                     ~ $45
           
           you could shrink this down allot cost wise if you eliminate the dht22 and oled screen, then
@@ -29,9 +29,23 @@ wiring:
          dht22 on pin 2
          OLED  on I2C (address 0x3c)
          pot   on pin A0
+         NPN transistor base on pin 11
          
 notes:   oleds can burn in, do not leave on, I am just going to battery 
          power and turn on to take spot checks.
+         
+version: 
+         added NPN transistor to explicitly power on servo so it wont jitter randomly on startup
+         also allows for servo power down when idle to conserve battery power
+
+output:
+        Sketch uses 16,308 bytes (50%) of program storage space. Maximum is 32,256 bytes.
+        Global variables use 1,730 bytes (84%) of dynamic memory, leaving 318 bytes for local variables. Maximum is 2,048 bytes.
+        Low memory available, stability problems may occur.
+
+todo:
+        trim out libraries to try to free up global memory?
+
 */
 
 #include <SPI.h>
@@ -41,16 +55,17 @@ notes:   oleds can burn in, do not leave on, I am just going to battery
 #include <dht22.h>
 #include <Servo.h>
 
+#define firmware_ver  "v0.1 " __DATE__ 
+
 int potPin = A0;  // analog pin used to connect the potentiometer
+int tranPin = 11;  //Transistor base pin
+                   //thanks Gary! - http://www.modsbyus.com/how-to-properly-detachturn-off-a-servo-with-arduino/
 
 dht22 DHT22;
 Servo myservo; 
 
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
- 
-//#define LOGO16_GLCD_HEIGHT 16 
-//#define LOGO16_GLCD_WIDTH  16 
 
 #if (SSD1306_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
@@ -61,48 +76,65 @@ int humi=0;
 int dewpt=0;
 int ticks=0;
 int lastVal=0;
+bool powerOn = false;
+long lastMove = 0;
 
-#define firmware_ver  "v1.3 " __DATE__  
-
-void setup()   {                
+void setup()   {   
+  
   Serial.begin(9600);
   
-  DHT22.attach(2);
-  myservo.attach(9);  
   pinMode(potPin, INPUT);
+  pinMode(tranPin, OUTPUT); 
+  
+  DHT22.attach(2);
+  myservo.attach(9); 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); 
   
-  display.clearDisplay(); 
-  display.setTextColor(WHITE);
-  display.setTextSize(1);
-  display.setCursor(0,0);
+  setupScreen(1);
   display.println(firmware_ver);
   display.println();
   display.println("Sandsprite.com");
   display.println("Attic Monitor");
   display.println("Fan Knob Remote");  
   display.display();
-  delay(2000);
 
+  myservo.write( servoPos() );   //set servo startup position..wont jump if still at last pos set on pot on power down..
+  powerDevices(true);            //now turn on the servo and dht22
+  
+  delay(2000);                   //pause to display splash screen ..
+  
 }
 
-double toFahrenheit(double dCelsius){ return 1.8 * dCelsius + 32; }
+void setupScreen(int textSz){
+  display.clearDisplay(); 
+  display.setTextColor(WHITE);
+  display.setTextSize(textSz);
+  display.setCursor(0,0);
+}
+      
+double toFahrenheit(double dCelsius){
+  return 1.8 * dCelsius + 32; 
+}
 
 void ReadDHT22(){
   
   int maxticks = 60 * 100; //10ms tick * 100 = 1sec * 60 = 1 minute
+  int chk=0;
   
   if(ticks >= maxticks) ticks = 0;
   
-  if( ticks == 0 || ticks > maxticks || temp == 0){
-      int chk = DHT22.read();
+  if( ticks == 0 || temp == 0){
       
-      switch (chk)
-      {
-        case 0: /*Serial.println("OK");*/ break;
+      for(int i=0; i < 4; i++){
+          chk = DHT22.read();
+          if(chk==0) break; else delay(250);
+      }
+            
+      switch(chk){
+        case  0: break;
         case -1: display.println("Checksum error"); return;
         case -2: display.println("Time out error"); return;
-        default: display.println("Unknown error"); return;
+        default: display.println("Unknown error");  return;
       }
       
       humi = DHT22.humidity;
@@ -116,28 +148,41 @@ void ReadDHT22(){
   display.print("Temp: ");
   display.println(temp);
 
-  display.print("DewPt: ");
+  display.print("DwPt: ");
   display.println(dewpt);
   
 }
 
+void powerDevices(bool on){
+  digitalWrite(tranPin, on ? HIGH : LOW); 
+  powerOn  = on;
+}
+
+int servoPos(){
+      int val = analogRead(potPin);        // reads the value of the potentiometer (value between 0 and 1023) 
+      return map(val, 0, 1023, 0, 180);     // scale it to use it with the servo (value between 0 and 180) 
+}
+
 void loop() {
       
-   int val = analogRead(potPin);        // reads the value of the potentiometer (value between 0 and 1023) 
-   val = map(val, 0, 1023, 0, 180);     // scale it to use it with the servo (value between 0 and 180) 
-   
+   int val = servoPos();                                      // todo: map servos pos to actual temp setting on dial for display and ignore invalid positions
+
    if( abs(val - lastVal) > 2){ //pot changed refresh display..
-       display.clearDisplay(); 
-       display.setTextColor(WHITE);
-       display.setCursor(0,0);
-       display.setTextSize(2);
+       lastVal = val;
+       if(!powerOn) powerDevices(true);
+       lastMove = millis();
+       setupScreen(2);
        display.print("Pos: ");
        display.println(val);
        ReadDHT22(); //only actually read once per min max..
        display.display();
-       myservo.write(val);               
+       myservo.write(val); 
+       delay(2);
    }
 
+   //conserve battery power when idle otherwise servo will keep drawing power to hold pos..
+   if( millis() - lastMove  > 1200 )  powerDevices(false); 
+   
    ticks++;
    delay(10);
 
