@@ -74,10 +74,10 @@ Adafruit_SSD1306 display(OLED_RESET);
 int temp=0;
 int humi=0;
 int dewpt=0;
-int ticks=0;
 int lastVal=0;
 bool powerOn = false;
-long lastMove = 0;
+unsigned long ticks=0;
+unsigned long lastMove = 0;
 
 void setup()   {   
   
@@ -129,12 +129,13 @@ void ReadDHT22(){
           chk = DHT22.read();
           if(chk==0) break; else delay(250);
       }
-            
-      switch(chk){
-        case  0: break;
-        case -1: display.println("Checksum error"); return;
-        case -2: display.println("Time out error"); return;
-        default: display.println("Unknown error");  return;
+      
+      if(chk !=0){      
+        display.println("dht Err");
+        if(chk == -1) display.println("Checksum");
+         else if(chk == -2) display.println("Timeout");
+          else display.println("Unknown");  
+        return;
       }
       
       humi = DHT22.humidity;
