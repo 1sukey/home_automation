@@ -1,4 +1,6 @@
 
+Build Video: https://www.youtube.com/watch?v=Xy_3JNN9hI4
+
 purpose:
 -----------------------------------
           display attic temp/humi/dew point, and remotly set a physical knob that determins when 
@@ -38,3 +40,5 @@ notes:
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/attic_fan/wiring.png)
 
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/attic_fan/attic_shield.jpg)
+
+![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/attic_fan/attic_servo_turn_knob.jpg)

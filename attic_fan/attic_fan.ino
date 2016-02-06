@@ -78,6 +78,7 @@ int lastVal=0;
 bool powerOn = false;
 unsigned long ticks=0;
 unsigned long lastMove = 0;
+unsigned int dhtFailed = 0;
 
 void setup()   {   
   
@@ -121,6 +122,14 @@ void ReadDHT22(){
   int maxticks = 60 * 100; //10ms tick * 100 = 1sec * 60 = 1 minute
   int chk=0;
   
+  //handle case of no dht22 connected or it is dead..
+  //if we dont do this the servo is super jumpy because of the delays 
+  if(dhtFailed >= 3){
+      display.println("dht Err");
+      display.println("Gave Up");
+      return; 
+  }
+  
   if(ticks >= maxticks) ticks = 0;
   
   if( ticks == 0 || temp == 0){
@@ -130,7 +139,8 @@ void ReadDHT22(){
           if(chk==0) break; else delay(250);
       }
       
-      if(chk !=0){      
+      if(chk !=0){    
+        dhtFailed++;  
         display.println("dht Err");
         if(chk == -1) display.println("Checksum");
          else if(chk == -2) display.println("Timeout");
@@ -138,6 +148,7 @@ void ReadDHT22(){
         return;
       }
       
+      if(dhtFailed > 0) dhtFailed--;
       humi = DHT22.humidity;
       temp = DHT22.fahrenheit();
       dewpt = toFahrenheit((double)DHT22.dewPoint());
