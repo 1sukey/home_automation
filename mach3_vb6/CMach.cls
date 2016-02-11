@@ -31,9 +31,13 @@ End Enum
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal pDest As Long, ByRef pSrc As Long, ByVal ByteLen As Long)
 
-'You can load mach3.exe as a reference in vs 2008 c# project and see all the prototypes IMyScriptObject supports..
-'DoMenu (Short)
-'DoMenu(short,short)
+'see rtf for all the methods and prototypes that oScript object supports.
+'todo:
+'    Sub DoButton (ByVal Function  As Integer )
+'    Function GetScale(ByVal Axis As Integer) As Double
+'    Sub SetScale (  ByVal Axis  As Integer , ByVal Scale  As Double )
+'    Function CommandedFeed() As Double
+
 
 'some OEM codes of possible interest.. (from OEMCOdes.csv on ftp)
 '4   Load G-code 32  1   216
@@ -93,9 +97,19 @@ Property Get IsStopped()
     IsStopped = oScript.IsStopped
 End Property
 
+Property Get IsSafeZ()
+    On Error Resume Next
+    IsSafeZ = oScript.IsSafeZ
+End Property
+
 Property Get IsMoving()
     On Error Resume Next
     IsMoving = oScript.IsMoving
+End Property
+
+Property Get IsFirst()
+    On Error Resume Next
+    IsFirst = oScript.IsFirst
 End Property
 
 Property Get IsLoading()
@@ -177,3 +191,62 @@ Private Sub IncrementRefCount(target As Object)
     
 
 End Sub
+
+
+
+
+Property Get RPM() As Double
+    On Error Resume Next
+    RPM = oScript.GetRPM()
+End Property
+
+Property Let RPM(x As Double)
+    On Error Resume Next
+    oScript.SetSpinSpeed x
+End Property
+
+Property Get FeedRate() As Double
+    On Error Resume Next
+    FeedRate = oScript.FeedRate()
+End Property
+
+Property Let FeedRate(x As Double)
+    On Error Resume Next
+    oScript.SetFeedRate x  'this is screwy right now 12.123 -> 720 ??
+End Property
+
+Property Get SafeZ() As Double
+    On Error Resume Next
+    SafeZ = oScript.GetSafeZ()
+End Property
+
+Property Let SafeZ(x As Double)
+    On Error Resume Next
+    oScript.SetSafeZ x
+End Property
+
+Sub GotoSafeZ()
+    On Error Resume Next
+    oScript.GotoSafeZ 'safe z has to be enabled in config / safe z setup
+End Sub
+
+Sub DoSpinCW()
+    On Error Resume Next
+    oScript.DoSpinCW
+End Sub
+
+Sub DoSpinCCW()
+    On Error Resume Next
+    oScript.DoSpinCCW 'this always seems to do CW ?
+End Sub
+
+Sub DoSpinStop()
+    On Error Resume Next
+    oScript.DoSpinStop
+End Sub
+
+Sub RunProgram(program As String)
+    On Error Resume Next
+    oScript.RunProgram program 'does not seem to work like this test: mach.RunProgram("g0 x1 y1" & vbcrlf & "y2")
+End Sub
+
