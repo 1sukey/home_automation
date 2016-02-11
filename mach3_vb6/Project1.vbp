@@ -38,4 +38,4 @@ MaxNumberOfThreads=1
 AutoRefresh=1
 
 [fastBuild]
-fullPath=D:\_code\tools\mach3_vb6\Project1.exe
+fullPath=D:\_code\home_automation\mach3_vb6\Project1.exe

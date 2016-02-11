@@ -11,13 +11,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal pDest As Long, ByRef pSrc As Long, ByVal ByteLen As Long)
+
 Public mach As Mach4.CMach4Doc
 Public oScript As Object
 
-Public Enum dros
-    dro_x = 0
-    dro_y = 1
-    dro_z = 2
+Public Enum axs
+    axis_x = 0
+    axis_y = 1
+    axis_z = 2
 End Enum
 
 Public Enum uis
@@ -29,60 +31,48 @@ Public Enum uis
     ui_Corrections = 6
 End Enum
 
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal pDest As Long, ByRef pSrc As Long, ByVal ByteLen As Long)
 
-'see rtf for all the methods and prototypes that oScript object supports.
+'OEM codes and descriptions for the oScript interface can be found in Mach3_V3.x_Macro_Prog_Ref.pdf
+'see rtf for a dump of all the methods and prototypes that oScript object supports.
 'todo:
-'    Sub DoButton (ByVal Function  As Integer )
 '    Function GetScale(ByVal Axis As Integer) As Double
 '    Sub SetScale (  ByVal Axis  As Integer , ByVal Scale  As Double )
-'    Function CommandedFeed() As Double
+'    SetParam/GetParam gives you allot of control over config.. <--
 
-
-'some OEM codes of possible interest.. (from OEMCOdes.csv on ftp)
-'4   Load G-code 32  1   216
-'6   Feed per Min    56  1   39
-'6   Feed per Rev    56  1   40
-'4   Jog mode Continuous 32  1   204
-'4   Jog mode Incremental    32  1   205
-'4   Joystick On 32  1   206
-'4   Joystick Off    32  1   207
-'4   Close File  32  1   169
-'4   ReLoad  32  1   170
-'4   Zero X-Y    32  1   161
-'4   Coordinate mode 32  1   162
-'4   Raise spindle speed 32  1   163
-'4   Lower spindle speed 32  1   164
-'4   Set next line   32  1   156
-'4   Go Home 32  1   138
-'4   Slow Jog Up 32  1   111
-'4   Slow Jog Dn 32  1   112
-'4   Flood   32  1   113
-'4   Mist    32  1   114
-'4   Goto Safe Z 32  1   104
-'4   Jog mode toggle 32  1   103
-
-'1   X Machine Coord DRO 12  1   83
-'1   Y Machine Coord DRO 12  1   84
-'1   Z Machine Coord DRO 12  1   85
-'
-
+'this is just some interesting OEM codes..there are many..these ones arent repeat of other funcs below..
 Public Enum OEMCodes
     oem_FeedPerMin = 39
     oem_FeedPerRev = 40
     oem_JogCont = 204
     oem_JogInc = 205
     oem_JogModeToggle = 103
-    oem_JoyStickOn = 206
-    oem_JoyStickOff = 207
+    oem_JoyStickOn = 206  '158?
+    oem_JoyStickOff = 207 '159?
     oem_CloseFile = 169
     oem_Reload = 170
     oem_GoHome = 138
     oem_Flood = 113
+    oem_Start = 1000
+    oem_RewindGCode = 1002
+    oem_PauseFeedHold = 1001
+    oem_Stop = 1003
+    oem_Resume = 1005
+    oem_Reset = 1021
+    oem_SoftlimitsToggle = 1029
 End Enum
 
- 
- 
+
+'start an axis jogging in a specified direction at the current default jog speed.
+Sub JogOn(axis As axs, Optional posDirection As Boolean)
+    On Error Resume Next
+    oScript.JogOn axis, IIf(posDirection, 0, 1)
+End Sub
+
+Sub JogOff(axis As axs)
+    On Error Resume Next
+    oScript.JogOff axis
+End Sub
+  
 Property Get isMachInit()
     isMachInit = Not mach Is Nothing
 End Property
@@ -92,11 +82,13 @@ Property Get IsEstop()
     IsEstop = oScript.IsEstop
 End Property
  
+'This function returns 1 if all axes are currently stopped.
 Property Get IsStopped()
     On Error Resume Next
     IsStopped = oScript.IsStopped
 End Property
 
+'This function returns 1 if Safe_Z isenabled in Config->Safe_Z Setup.
 Property Get IsSafeZ()
     On Error Resume Next
     IsSafeZ = oScript.IsSafeZ
@@ -117,12 +109,12 @@ Property Get IsLoading()
     IsLoading = oScript.IsLoading
 End Property
 
-Function ReadDRO(x As dros) As String
+Function ReadDRO(x As axs) As String
     On Error Resume Next
     ReadDRO = oScript.GetDROString(x)
 End Function
 
-Sub SetDRO(x As dros, val As Double)
+Sub SetDRO(x As axs, val As Double)
     On Error Resume Next
     oScript.SetDRO x, val
 End Sub
@@ -132,9 +124,14 @@ Sub UserMsg(msg As String)
     oScript.Message msg
 End Sub
 
-Sub RunGCode(singleLine As String)
+Sub RunGCode(singleLine As String, Optional andBlock As Boolean = True)
     On Error Resume Next
     oScript.code singleLine
+    If andBlock Then
+        While Me.IsMoving
+            DoEvents
+        Wend
+    End If
 End Sub
 
 Sub LoadFile(path As String, Optional andRun As Boolean)
@@ -148,7 +145,7 @@ Sub RunLoadedFile()
     oScript.RunFile
 End Sub
 
-Function FileName() As String
+Function FileName() As String ' returns No File Loaded. if none loaded..
     On Error Resume Next
     FileName = oScript.FileName()
 End Function
@@ -195,12 +192,12 @@ End Sub
 
 
 
-Property Get RPM() As Double
+Property Get SpindleRPM() As Double
     On Error Resume Next
-    RPM = oScript.GetRPM()
+    SpindleRPM = oScript.GetRPM()
 End Property
 
-Property Let RPM(x As Double)
+Property Let SpindleRPM(x As Double)
     On Error Resume Next
     oScript.SetSpinSpeed x
 End Property
@@ -210,9 +207,9 @@ Property Get FeedRate() As Double
     FeedRate = oScript.FeedRate()
 End Property
 
-Property Let FeedRate(x As Double)
+Property Let FeedRate(unitsPerSecond As Double)
     On Error Resume Next
-    oScript.SetFeedRate x  'this is screwy right now 12.123 -> 720 ??
+    oScript.SetFeedRate unitsPerSecond  'note: FeedRate = 12 -> 720  which is 12 * 60..divide by 60 to make more intutive?
 End Property
 
 Property Get SafeZ() As Double
@@ -230,17 +227,17 @@ Sub GotoSafeZ()
     oScript.GotoSafeZ 'safe z has to be enabled in config / safe z setup
 End Sub
 
-Sub DoSpinCW()
+Sub StartSpindle(Optional clockWise As Boolean = True, Optional setRPM As Double = -1)
     On Error Resume Next
-    oScript.DoSpinCW
+    If setRPM > 0 Then Me.SpindleRPM = setRPM
+    If clockWise Then
+        oScript.DoSpinCW
+    Else
+        oScript.DoSpinCCW 'this always show CW ? m4 gives same output..
+    End If
 End Sub
 
-Sub DoSpinCCW()
-    On Error Resume Next
-    oScript.DoSpinCCW 'this always seems to do CW ?
-End Sub
-
-Sub DoSpinStop()
+Sub StopSpindle()
     On Error Resume Next
     oScript.DoSpinStop
 End Sub
