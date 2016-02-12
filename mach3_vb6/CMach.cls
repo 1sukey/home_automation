@@ -11,10 +11,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal pDest As Long, ByRef pSrc As Long, ByVal ByteLen As Long)
+Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (ByVal pDest As Long, ByRef pSrc As Long, ByVal ByteLen As Long)
 
 Public mach As Mach4.CMach4Doc
 Public oScript As Object
+Public InitErrorMsg As String
 
 Public Enum axs
     axis_x = 0
@@ -163,11 +164,38 @@ End Sub
 
 Public Function InitMach() As Boolean
     On Error Resume Next
+    
+    InitErrorMsg = Empty
+    
+    If Not isMachRunning() Then
+        InitErrorMsg = "Mach3 must be running"
+        Exit Function
+    End If
+    
+    If Not isMachCOMObjRegistered() Then
+        If Not RegisterMachCOMType() Then
+            InitErrorMsg = "Could not register Mach ProgId in Registry. Run again as administrator."
+            Exit Function
+        End If
+    End If
+    
     Set mach = GetObject(, "Mach4.Document")
-    If mach Is Nothing Then Exit Function
+    
+    If mach Is Nothing Then
+        InitErrorMsg = "Failed to GetObject(Mach4.Document) " & Err.Description
+        Exit Function
+    End If
+    
     IncrementRefCount mach
     Set oScript = mach.GetScriptDispatch()
-    If Err.Number = 0 Then InitMach = True
+    
+    If Err.Number = 0 Then
+        InitMach = True
+    Else
+        InitErrorMsg = "InitMach Failed: " & Err.Description
+        Exit Function
+    End If
+    
 End Function
 
 'mach does not properly increment its ref count when using GetObject()

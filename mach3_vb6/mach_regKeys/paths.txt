@@ -1,0 +1,6 @@
+
+ones with a file path you may have to change:
+
+Typelib.316FD
+Mach4.Document.clsid.CA799.reg
+HKLM.TypeLib.316FD4.reg
