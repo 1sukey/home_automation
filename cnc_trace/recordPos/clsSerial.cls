@@ -11,6 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'Author:   dzzie@yahoo.com
+'Site:     http://sandsprite.com
+
 Dim WithEvents oCom As MSComm
 Attribute oCom.VB_VarHelpID = -1
 Public Event MessageReceived(msg As String)

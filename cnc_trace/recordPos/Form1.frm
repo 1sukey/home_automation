@@ -1,120 +1,197 @@
 VERSION 5.00
 Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
 Begin VB.Form Form1 
-   Caption         =   "Trace Path"
-   ClientHeight    =   4020
+   Caption         =   "CNC_Trace      http://sandsprite.com"
+   ClientHeight    =   4710
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   5760
+   ClientWidth     =   7260
    LinkTopic       =   "Form1"
-   ScaleHeight     =   4020
-   ScaleWidth      =   5760
+   ScaleHeight     =   4710
+   ScaleWidth      =   7260
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdBrowse 
+      Caption         =   "..."
+      Height          =   330
+      Left            =   6750
+      TabIndex        =   20
+      Top             =   1260
+      Width           =   420
+   End
+   Begin VB.TextBox txtSmooth 
+      Height          =   330
+      Left            =   5265
+      TabIndex        =   18
+      Text            =   ".010"
+      Top             =   1665
+      Width           =   1410
+   End
+   Begin VB.TextBox txtPath 
+      Height          =   330
+      Left            =   5265
+      TabIndex        =   16
+      Text            =   "c:\path.txt"
+      Top             =   1260
+      Width           =   1410
+   End
    Begin VB.CommandButton cmdRecordPath 
       Caption         =   "Record Path"
       Height          =   375
-      Left            =   4020
+      Left            =   5265
       TabIndex        =   14
-      Top             =   1020
-      Width           =   1215
+      Top             =   2115
+      Width           =   1440
    End
    Begin VB.CommandButton cmdZero 
       Caption         =   "Zero Enc"
       Height          =   330
-      Left            =   2880
+      Left            =   2925
       TabIndex        =   13
-      Top             =   585
+      Top             =   1170
       Width           =   960
    End
    Begin VB.CommandButton cmdClear 
       Caption         =   "Clear"
       Height          =   375
-      Left            =   2880
+      Left            =   2925
       TabIndex        =   12
-      Top             =   1980
+      Top             =   2565
       Width           =   1050
    End
    Begin VB.CommandButton cmdCopy 
-      Caption         =   "Copy Output"
+      Caption         =   "Save Output"
       Height          =   375
-      Left            =   2880
+      Left            =   2925
       TabIndex        =   11
-      Top             =   3510
+      Top             =   4095
       Width           =   1095
    End
    Begin VB.TextBox txtDesc 
       Height          =   330
-      Left            =   765
+      Left            =   810
       TabIndex        =   10
-      Top             =   1485
+      Top             =   2070
       Width           =   1995
    End
    Begin VB.ListBox List1 
       Height          =   2010
-      Left            =   90
+      Left            =   135
       TabIndex        =   8
-      Top             =   1935
+      Top             =   2520
       Width           =   2670
    End
    Begin VB.CommandButton cmdSavePoint 
       Caption         =   "Save Point"
       Height          =   375
-      Left            =   2880
+      Left            =   2925
       TabIndex        =   7
-      Top             =   1035
+      Top             =   1620
       Width           =   960
    End
    Begin VB.TextBox txtPos 
       Height          =   330
-      Left            =   765
+      Left            =   810
       TabIndex        =   6
-      Top             =   1035
+      Top             =   1620
       Width           =   1995
    End
    Begin VB.TextBox txtEncoder 
       Height          =   285
-      Left            =   765
+      Left            =   810
       TabIndex        =   5
-      Top             =   630
+      Top             =   1215
       Width           =   1995
    End
    Begin VB.ComboBox CboPort 
       Height          =   315
-      Left            =   495
+      Left            =   1350
       TabIndex        =   1
       Top             =   135
       Width           =   1950
    End
    Begin MSCommLib.MSComm MSComm1 
-      Left            =   5310
-      Top             =   3195
+      Left            =   4950
+      Top             =   45
       _ExtentX        =   1005
       _ExtentY        =   1005
       _Version        =   393216
       DTREnable       =   -1  'True
    End
+   Begin VB.Label Label7 
+      Caption         =   "Record Points"
+      Height          =   240
+      Index           =   1
+      Left            =   45
+      TabIndex        =   22
+      Top             =   855
+      Width           =   2445
+   End
+   Begin VB.Line Line2 
+      X1              =   90
+      X2              =   7290
+      Y1              =   1125
+      Y2              =   1125
+   End
+   Begin VB.Label Label7 
+      Caption         =   "Record Path"
+      Height          =   285
+      Index           =   0
+      Left            =   4185
+      TabIndex        =   21
+      Top             =   810
+      Width           =   2445
+   End
+   Begin VB.Line Line1 
+      X1              =   4140
+      X2              =   4140
+      Y1              =   1125
+      Y2              =   4590
+   End
+   Begin VB.Label lblRecorded 
+      Height          =   420
+      Left            =   4725
+      TabIndex        =   19
+      Top             =   2700
+      Width           =   2535
+   End
+   Begin VB.Label Label6 
+      Caption         =   "smoothing"
+      Height          =   285
+      Left            =   4455
+      TabIndex        =   17
+      Top             =   1710
+      Width           =   825
+   End
+   Begin VB.Label Label5 
+      Caption         =   "Save To"
+      Height          =   240
+      Left            =   4500
+      TabIndex        =   15
+      Top             =   1305
+      Width           =   735
+   End
    Begin VB.Label Label4 
       Caption         =   "Name"
       Height          =   285
-      Left            =   45
+      Left            =   90
       TabIndex        =   9
-      Top             =   1530
+      Top             =   2115
       Width           =   690
    End
    Begin VB.Label Label3 
       Caption         =   "Encoder"
       Height          =   285
-      Left            =   45
+      Left            =   90
       TabIndex        =   4
-      Top             =   675
+      Top             =   1260
       Width           =   645
    End
    Begin VB.Label Label1 
       Caption         =   "CurPos"
       Height          =   285
-      Left            =   45
+      Left            =   90
       TabIndex        =   3
-      Top             =   1080
+      Top             =   1665
       Width           =   690
    End
    Begin VB.Label lblRefresh 
@@ -130,18 +207,18 @@ Begin VB.Form Form1
       EndProperty
       ForeColor       =   &H00FF0000&
       Height          =   195
-      Left            =   2655
+      Left            =   3510
       TabIndex        =   2
       Top             =   180
       Width           =   780
    End
    Begin VB.Label Label2 
-      Caption         =   "Port"
+      Caption         =   "Active Serial Port"
       Height          =   285
       Left            =   45
       TabIndex        =   0
       Top             =   180
-      Width           =   870
+      Width           =   1590
    End
 End
 Attribute VB_Name = "Form1"
@@ -149,17 +226,17 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'Copyright David Zimmer <dzzie@yahoo.com>
-'all rights reserved
-'this software is free for personal use.
-'If you would like to to use this commercially, please consider a paypal donation
-'in respect for my time creating it.
+'author: David Zimmer <dzzie@yahoo.com>
 
 Dim WithEvents serial As clsSerial
 Attribute serial.VB_VarHelpID = -1
 
 Dim hRec As Long
 Dim hits As Long
+Dim smoothing As Double
+Dim lastX As Double
+Dim lastY As Double
+Dim dlg As New clsCmnDlg2
 
 Private Sub CboPort_Click()
     Dim port As Long
@@ -186,6 +263,12 @@ Private Sub CboPort_Click()
     
 End Sub
 
+Private Sub cmdBrowse_Click()
+    Dim p As String
+    p = dlg.SaveDialog(AllFiles, , "Save path as", , Me.hWnd, "path.txt")
+    txtPath = p
+End Sub
+
 Private Sub cmdClear_Click()
     List1.Clear
 End Sub
@@ -193,15 +276,27 @@ End Sub
 
 Private Sub cmdCopy_Click()
 
-    Dim t As String
+    Dim t() As String
+    Dim pth As String
     
-    For i = 0 To List1.ListCount
-        t = t & List1.List(i) & vbCrLf
-        t = t & "G04 P1" & vbCrLf
+    On Error Resume Next
+    
+    pth = dlg.SaveDialog(AllFiles, , "Save points file", , Me.hWnd, "points.txt")
+    If Len(pth) = 0 Then Exit Sub
+    
+    push t, "; Point file recorded by cnc_trace - sandsprite.com, " & Now & vbCrLf
+    push t, "G0"
+    
+    For i = 0 To List1.ListCount - 1
+        push t, List1.List(i)
+        push t, "G04 P1"
     Next
     
-    Clipboard.Clear
-    Clipboard.SetText t
+    WriteFile pth, Join(t, vbCrLf)
+    
+    If Err.Number <> 0 Then
+        MsgBox Err.Description, vbInformation
+    End If
     
 End Sub
 
@@ -209,13 +304,37 @@ Private Sub cmdRecordPath_Click()
     On Error Resume Next
     
     If cmdRecordPath.Caption = "Record Path" Then
+        lblRecorded = Empty
+        smoothing = CDbl(txtSmooth)
+        
+        If Err.Number <> 0 Then
+            MsgBox "Invalid smoothing value enter decimal change to ignore."
+            Exit Sub
+        End If
+        
+        If Len(txtPath) = 0 Then
+            MsgBox "Select a output file path"
+            Exit Sub
+        End If
+        
         cmdRecordPath.Caption = "Stop"
         hits = 0
+        
+        If FileExists(txtPath) Then Kill txtPath
+        
         hRec = FreeFile
-        Kill "C:\path.txt"
-        Open "C:\path.txt" For Output As hRec
+        Open txtPath For Output As hRec
+        Print #hRec, "; Path recorded by cnc_trace sandsprite.com " & Now & vbCrLf
+        Print #hRec, "G0"
+        
+        If Err.Number <> 0 Then
+            MsgBox "Error opening file: " & Err.Description
+            Close hRec
+            cmdRecordPath.Caption = "Record Path"
+        End If
+        
     Else
-        MsgBox hits & " points recorded!", vbInformation
+        lblRecorded = hits & " points recorded."
         Close hRec
         hRec = 0
         cmdRecordPath.Caption = "Record Path"
@@ -228,12 +347,13 @@ Private Sub cmdSavePoint_Click()
     If Len(txtPos) = 0 Then Exit Sub
     
     On Error GoTo hell
+    If InStr(txtPos, ",") < 1 Then Exit Sub
     
     tmp = Split(txtPos, ",")
     
     ret = "X" & tmp(0) & " Y" & tmp(1)
     If Len(txtDesc) > 0 Then
-        ret = ret & " ;" & txtDesc
+        ret = ret & " ;  " & txtDesc
     End If
     
     List1.AddItem ret
@@ -293,23 +413,38 @@ Private Sub serial_MessageReceived(msg As String)
 
     On Error Resume Next
     
+    Dim recordIt As Boolean
+    Dim x As Double
+    Dim y As Double
+    Dim tmp
+    
     If Left(msg, 1) = "#" Then Exit Sub
     
     txtEncoder = Replace(msg, vbCr, Empty)
     
     tmp = Split(msg, ",")
     
-    Dim x As Double
-    Dim y As Double
-    
     x = CDbl(tmp(0)) * 0.00066 'now we are in inches for each axis (calibration)
     y = CDbl(tmp(1)) * 0.00052
     
-    txtPos = Round(x, 3) & "," & Round(y, 3)
+    x = Round(x, 3)
+    y = Round(y, 3)
+    
+    txtPos = x & "," & y
     
     If hRec <> 0 Then
-        hits = hits + 1
-        Print #hRec, "X" & Round(x, 3) & " Y" & Round(y, 3)
+        
+        If Abs(lastX - x) >= smoothing Then recordIt = True
+        If Abs(lastY - y) >= smoothing Then recordIt = True
+        
+        If (recordIt) Then
+            lastX = x
+            lastY = y
+            hits = hits + 1
+            Print #hRec, "X" & x & " Y" & y
+        End If
+        
+        
     End If
     
     

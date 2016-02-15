@@ -1,9 +1,4 @@
 Attribute VB_Name = "modMain"
-Function FileExists(path) As Boolean
-  If Dir(path, vbHidden Or vbNormal Or vbReadOnly Or vbSystem) <> "" Then FileExists = True _
-  Else FileExists = False
-End Function
-
 
 'This will handle the installation of the OCX control if it is not already found on the system
 'this runs from a module before the main form is loaded because the main form depends on the OCX.
@@ -37,3 +32,29 @@ Sub Main()
     
 End Sub
 
+Function FileExists(path As String) As Boolean
+  On Error GoTo hell
+    
+  If Len(path) = 0 Then Exit Function
+  If Right(path, 1) = "\" Then Exit Function
+  If Dir(path, vbHidden Or vbNormal Or vbReadOnly Or vbSystem) <> "" Then FileExists = True
+  
+  Exit Function
+hell: FileExists = False
+End Function
+
+Sub WriteFile(path, it)
+    f = FreeFile
+    Open path For Output As #f
+    Print #f, it
+    Close f
+End Sub
+
+Sub push(ary, value) 'this modifies parent ary object
+    On Error GoTo init
+    x = UBound(ary) '<-throws Error If Not initalized
+    ReDim Preserve ary(UBound(ary) + 1)
+    ary(UBound(ary)) = value
+    Exit Sub
+init:     ReDim ary(0): ary(0) = value
+End Sub
