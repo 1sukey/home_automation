@@ -12,7 +12,7 @@ Sub Main()
     
     On Error Resume Next
     
-    ocx = "c:\windows\system32\mscomm32.ocx"
+    ocx = Environ("windir") & "\system32\mscomm32.ocx"
     src = App.path & "\mscomm32.ocx"
     
     If Not FileExists(ocx) Then
@@ -58,3 +58,18 @@ Sub push(ary, value) 'this modifies parent ary object
     Exit Sub
 init:     ReDim ary(0): ary(0) = value
 End Sub
+
+Function IsIde() As Boolean
+' Brad Martinez  http://www.mvps.org/ccrp
+    On Error GoTo out
+    Debug.Print 1 / 0
+out: IsIde = Err
+End Function
+
+
+
+
+
+
+
+

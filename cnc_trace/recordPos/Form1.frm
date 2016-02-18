@@ -2,14 +2,30 @@ VERSION 5.00
 Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
 Begin VB.Form Form1 
    Caption         =   "CNC_Trace      http://sandsprite.com"
-   ClientHeight    =   4710
+   ClientHeight    =   5025
    ClientLeft      =   60
-   ClientTop       =   345
+   ClientTop       =   630
    ClientWidth     =   7260
    LinkTopic       =   "Form1"
-   ScaleHeight     =   4710
+   ScaleHeight     =   5025
    ScaleWidth      =   7260
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton cmdMachZero 
+      Caption         =   "Mach Zero"
+      Height          =   375
+      Left            =   90
+      TabIndex        =   25
+      Top             =   4635
+      Width           =   1050
+   End
+   Begin VB.CommandButton cmdMachGoto 
+      Caption         =   "Mach Goto"
+      Height          =   375
+      Left            =   1170
+      TabIndex        =   23
+      Top             =   4635
+      Width           =   1050
+   End
    Begin VB.CommandButton cmdBrowse 
       Caption         =   "..."
       Height          =   330
@@ -56,14 +72,14 @@ Begin VB.Form Form1
       Left            =   2925
       TabIndex        =   12
       Top             =   2565
-      Width           =   1050
+      Width           =   1095
    End
    Begin VB.CommandButton cmdCopy 
       Caption         =   "Save Output"
       Height          =   375
       Left            =   2925
       TabIndex        =   11
-      Top             =   4095
+      Top             =   3285
       Width           =   1095
    End
    Begin VB.TextBox txtDesc 
@@ -116,6 +132,13 @@ Begin VB.Form Form1
       _ExtentY        =   1005
       _Version        =   393216
       DTREnable       =   -1  'True
+   End
+   Begin VB.Label lblMach 
+      Height          =   330
+      Left            =   2295
+      TabIndex        =   24
+      Top             =   4680
+      Width           =   4830
    End
    Begin VB.Label Label7 
       Caption         =   "Record Points"
@@ -220,6 +243,9 @@ Begin VB.Form Form1
       Top             =   180
       Width           =   1590
    End
+   Begin VB.Menu mnuCalculator 
+      Caption         =   "Tools"
+   End
 End
 Attribute VB_Name = "Form1"
 Attribute VB_GlobalNameSpace = False
@@ -228,8 +254,12 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'author: David Zimmer <dzzie@yahoo.com>
 
-Dim WithEvents serial As clsSerial
+Public WithEvents serial As clsSerial
 Attribute serial.VB_VarHelpID = -1
+
+'will not throw an error if mach is not installed (all late bound),
+'just wont enable mach related buttons..
+Public mach As New CMach
 
 Dim hRec As Long
 Dim hits As Long
@@ -300,6 +330,34 @@ Private Sub cmdCopy_Click()
     
 End Sub
 
+Private Sub cmdMachGoto_Click()
+    
+    If List1.ListCount < 1 Then
+        MsgBox "No points in list yet"
+        Exit Sub
+    End If
+    
+    If List1.ListIndex = -1 Then List1.ListIndex = 0
+    
+    mach.GotoSafeZ
+    mach.RunGCode "G0 " & List1.List(List1.ListIndex)
+    
+    If List1.ListIndex + 1 = List1.ListCount Then
+        List1.ListIndex = -1
+    Else
+        List1.ListIndex = List1.ListIndex + 1
+    End If
+    
+End Sub
+
+
+
+Private Sub cmdMachZero_Click()
+    mach.SetDRO axis_x, 0
+    mach.SetDRO axis_y, 0
+    mach.SetDRO axis_z, 0
+End Sub
+
 Private Sub cmdRecordPath_Click()
     On Error Resume Next
     
@@ -368,9 +426,27 @@ End Sub
 
 Private Sub Form_Load()
 
+    mnuCalculator.Enabled = IsIde()
+    
     Set serial = New clsSerial
     serial.Configure MSComm1
     LoadPorts
+
+    Dim machEnabled As Boolean
+    
+    If Not isMachInstalled() Then
+        lblMach = "Mach3 not installed Automation Disabled."
+    Else
+        If Not mach.InitMach() Then
+            lblMach = mach.InitErrorMsg
+        Else
+            lblMach = "Connected to Mach3 Automation Interface"
+            machEnabled = True
+        End If
+    End If
+    
+    cmdMachGoto.Enabled = machEnabled
+    cmdMachZero.Enabled = machEnabled
     
 End Sub
 
@@ -405,8 +481,13 @@ End Sub
 Private Sub lblRefresh_Click()
     Screen.MousePointer = vbHourglass
     CboPort.Clear
-    LoadPorts
+    'LoadPorts
+    Form_Load
     Screen.MousePointer = vbDefault
+End Sub
+
+Private Sub mnuCalculator_Click()
+    frmTools.Visible = True
 End Sub
 
 Private Sub serial_MessageReceived(msg As String)
@@ -415,7 +496,7 @@ Private Sub serial_MessageReceived(msg As String)
     
     Dim recordIt As Boolean
     Dim x As Double
-    Dim y As Double
+    Dim Y As Double
     Dim tmp
     
     If Left(msg, 1) = "#" Then Exit Sub
@@ -425,23 +506,23 @@ Private Sub serial_MessageReceived(msg As String)
     tmp = Split(msg, ",")
     
     x = CDbl(tmp(0)) * 0.00066 'now we are in inches for each axis (calibration)
-    y = CDbl(tmp(1)) * 0.00052
+    Y = CDbl(tmp(1)) * 0.00052
     
     x = Round(x, 3)
-    y = Round(y, 3)
+    Y = Round(Y, 3)
     
-    txtPos = x & "," & y
+    txtPos = x & "," & Y
     
     If hRec <> 0 Then
         
         If Abs(lastX - x) >= smoothing Then recordIt = True
-        If Abs(lastY - y) >= smoothing Then recordIt = True
+        If Abs(lastY - Y) >= smoothing Then recordIt = True
         
         If (recordIt) Then
             lastX = x
-            lastY = y
+            lastY = Y
             hits = hits + 1
-            Print #hRec, "X" & x & " Y" & y
+            Print #hRec, "X" & x & " Y" & Y
         End If
         
         

@@ -64,6 +64,7 @@ Private Sub oCom_OnComm()
                         buf = Mid(buf, InStrRev(buf, vbLf))
                     Else
                         If Len(tmp(i)) > 0 Then
+                            If Right(tmp(i), 1) = vbCr Then tmp(i) = Left(tmp(i), Len(tmp(i)) - 1)
                             RaiseEvent MessageReceived(tmp(i))
                             tmp(i) = Empty       'remove this entry from buffer..may be more
                             buf = Join(tmp, vbLf)

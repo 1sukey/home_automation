@@ -13,7 +13,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Private Declare Sub CopyMemory Lib "Kernel32" Alias "RtlMoveMemory" (ByVal pDest As Long, ByRef pSrc As Long, ByVal ByteLen As Long)
 
-Public mach As Mach4.CMach4Doc
+Public mach As Object 'better to late bind since it has so few methods.. Mach4.CMach4Doc
 Public oScript As Object
 Public InitErrorMsg As String
 

@@ -91,6 +91,15 @@ Private Type PROCESSENTRY32
     szexeFile As String * 260
 End Type
 
+Function isMachInstalled() As Boolean
+    
+    If RegKeyExists(HKEY_CLASSES_ROOT, "\CLSID\{2DD5D509-E89E-4825-87D3-A939E689BD25}\InprocServer32") Then
+        isMachInstalled = True
+        Exit Function
+    End If
+    
+End Function
+
 Function isMachCOMObjRegistered() As Boolean
     
     If RegKeyExists(HKEY_CLASSES_ROOT, "\Mach4.Document\CLSID") Then
@@ -207,15 +216,15 @@ End Function
 
 
 
-Sub push(ary, value) 'this modifies parent ary object
-    Dim x As Long
-    On Error GoTo init
-    x = UBound(ary) '<-throws Error If Not initalized
-    ReDim Preserve ary(UBound(ary) + 1)
-    ary(UBound(ary)) = value
-    Exit Sub
-init:     ReDim ary(0): ary(0) = value
-End Sub
+'Sub push(ary, value) 'this modifies parent ary object
+'    Dim x As Long
+'    On Error GoTo init
+'    x = UBound(ary) '<-throws Error If Not initalized
+'    ReDim Preserve ary(UBound(ary) + 1)
+'    ary(UBound(ary)) = value
+'    Exit Sub
+'init:     ReDim ary(0): ary(0) = value
+'End Sub
 
 Private Function stdPath(sIn) As String
     stdPath = Replace(sIn, "/", "\")
