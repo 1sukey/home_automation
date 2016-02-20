@@ -257,7 +257,7 @@ Private Sub serial_MessageReceived(msg As String)
     
     Dim recordIt As Boolean
     Dim x As Double
-    Dim Y As Double
+    Dim y As Double
     Dim tmp
     
     If Not recording Then Exit Sub
@@ -265,14 +265,14 @@ Private Sub serial_MessageReceived(msg As String)
     
     tmp = Split(msg, ",")
     
-    x = CDbl(tmp(0)) * 0.00066 'now we are in inches for each axis (calibration)
-    Y = CDbl(tmp(1)) * 0.00052
+    x = CDbl(tmp(0)) * modMain.x_calibration '0.00066 'now we are in inches for each axis (calibration)
+    y = CDbl(tmp(1)) * modMain.y_calibration '0.00052
     
     x = Round(x, 3)
-    Y = Round(Y, 3)
+    y = Round(y, 3)
     
     push xx, x
-    push yy, Y
+    push yy, y
     
     
 End Sub

@@ -1,4 +1,7 @@
 Attribute VB_Name = "modMain"
+Public x_calibration As Double
+Public y_calibration As Double
+
 
 'This will handle the installation of the OCX control if it is not already found on the system
 'this runs from a module before the main form is loaded because the main form depends on the OCX.
@@ -28,7 +31,20 @@ Sub Main()
         End If
     End If
     
+    x_calibration = CDbl(GetSetting("cnc_trace", "config", "x_calibration", "0.00066"))
+    y_calibration = CDbl(GetSetting("cnc_trace", "config", "y_calibration", "0.00052"))
+    
     Form1.Visible = True
+    
+End Sub
+
+Sub SaveCalibration(x As Double, y As Double)
+
+    x_calibration = x
+    y_calibration = y
+    
+    SaveSetting "cnc_trace", "config", "x_calibration", CStr(Round(x, 5))
+    SaveSetting "cnc_trace", "config", "y_calibration", CStr(Round(y, 5))
     
 End Sub
 

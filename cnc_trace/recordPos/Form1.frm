@@ -2,29 +2,53 @@ VERSION 5.00
 Object = "{648A5603-2C6E-101B-82B6-000000000014}#1.1#0"; "MSCOMM32.OCX"
 Begin VB.Form Form1 
    Caption         =   "CNC_Trace      http://sandsprite.com"
-   ClientHeight    =   5025
+   ClientHeight    =   6885
    ClientLeft      =   60
    ClientTop       =   630
    ClientWidth     =   7260
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5025
+   ScaleHeight     =   6885
    ScaleWidth      =   7260
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton cmdMachZero 
-      Caption         =   "Mach Zero"
-      Height          =   375
+   Begin VB.Frame fraMach 
+      Caption         =   "Mach 3 Integration "
+      Height          =   2130
       Left            =   90
-      TabIndex        =   25
-      Top             =   4635
-      Width           =   1050
-   End
-   Begin VB.CommandButton cmdMachGoto 
-      Caption         =   "Mach Goto"
-      Height          =   375
-      Left            =   1170
       TabIndex        =   23
       Top             =   4635
-      Width           =   1050
+      Width           =   7125
+      Begin VB.CommandButton cmdLoadFileInMach 
+         Caption         =   "Load Recorded Path File in Mach"
+         Height          =   420
+         Left            =   4275
+         TabIndex        =   27
+         Top             =   495
+         Width           =   2760
+      End
+      Begin VB.CommandButton cmdXfer2Mach 
+         Caption         =   "Transfer CurPos to Mach"
+         Height          =   375
+         Left            =   90
+         TabIndex        =   26
+         Top             =   1035
+         Width           =   2220
+      End
+      Begin VB.CommandButton cmdMachGoto 
+         Caption         =   "Goto Next Point in List"
+         Height          =   375
+         Left            =   90
+         TabIndex        =   25
+         Top             =   1620
+         Width           =   2220
+      End
+      Begin VB.CommandButton cmdMachZero 
+         Caption         =   "Zero Mach DROs"
+         Height          =   375
+         Left            =   90
+         TabIndex        =   24
+         Top             =   450
+         Width           =   2220
+      End
    End
    Begin VB.CommandButton cmdBrowse 
       Caption         =   "..."
@@ -101,8 +125,8 @@ Begin VB.Form Form1
       Height          =   375
       Left            =   2925
       TabIndex        =   7
-      Top             =   1620
-      Width           =   960
+      Top             =   2025
+      Width           =   1095
    End
    Begin VB.TextBox txtPos 
       Height          =   330
@@ -132,13 +156,6 @@ Begin VB.Form Form1
       _ExtentY        =   1005
       _Version        =   393216
       DTREnable       =   -1  'True
-   End
-   Begin VB.Label lblMach 
-      Height          =   330
-      Left            =   2295
-      TabIndex        =   24
-      Top             =   4680
-      Width           =   4830
    End
    Begin VB.Label Label7 
       Caption         =   "Record Points"
@@ -246,6 +263,9 @@ Begin VB.Form Form1
    Begin VB.Menu mnuCalculator 
       Caption         =   "Tools"
    End
+   Begin VB.Menu mnuConfig 
+      Caption         =   "Config"
+   End
 End
 Attribute VB_Name = "Form1"
 Attribute VB_GlobalNameSpace = False
@@ -328,6 +348,11 @@ Private Sub cmdCopy_Click()
         MsgBox Err.Description, vbInformation
     End If
     
+End Sub
+
+Private Sub cmdLoadFileInMach_Click()
+    cmdXfer2Mach_Click
+    mach.LoadFile txtPath
 End Sub
 
 Private Sub cmdMachGoto_Click()
@@ -419,6 +444,29 @@ Private Sub cmdSavePoint_Click()
 hell:
 End Sub
 
+Private Sub cmdXfer2Mach_Click()
+    
+    If Len(txtPos) = 0 Then Exit Sub
+    
+    On Error GoTo hell
+    If InStr(txtPos, ",") < 1 Then Exit Sub
+    
+    tmp = Split(txtPos, ",")
+    
+    Dim x As Double
+    Dim y As Double
+    
+    x = CDbl(tmp(0))
+    y = CDbl(tmp(1))
+    
+    mach.SetDRO axis_x, x
+    mach.SetDRO axis_y, y
+    
+    Exit Sub
+hell:
+    MsgBox Err.Description
+End Sub
+
 Private Sub cmdZero_Click()
     On Error Resume Next
     MSComm1.Output = "zero" & vbLf
@@ -435,22 +483,26 @@ Private Sub Form_Load()
     Dim machEnabled As Boolean
     
     If Not isMachInstalled() Then
-        lblMach = "Mach3 not installed Automation Disabled."
+        SetMachStatus "Mach3 not installed Automation Disabled."
     Else
         If Not mach.InitMach() Then
-            lblMach = mach.InitErrorMsg
+            SetMachStatus mach.InitErrorMsg
         Else
-            lblMach = "Connected to Mach3 Automation Interface"
+            SetMachStatus "Connected to Mach3 Automation Interface"
             machEnabled = True
         End If
     End If
     
     cmdMachGoto.Enabled = machEnabled
     cmdMachZero.Enabled = machEnabled
+    cmdXfer2Mach.Enabled = machEnabled
+    cmdLoadFileInMach.Enabled = machEnabled
     
 End Sub
 
-
+Sub SetMachStatus(msg)
+    fraMach.Caption = "Mach3 Integration - Status: " & msg
+End Sub
 
 Private Sub LoadPorts()
     Dim strComputer As String
@@ -490,13 +542,17 @@ Private Sub mnuCalculator_Click()
     frmTools.Visible = True
 End Sub
 
+Private Sub mnuConfig_Click()
+    frmConfig.Show
+End Sub
+
 Private Sub serial_MessageReceived(msg As String)
 
     On Error Resume Next
     
     Dim recordIt As Boolean
     Dim x As Double
-    Dim Y As Double
+    Dim y As Double
     Dim tmp
     
     If Left(msg, 1) = "#" Then Exit Sub
@@ -505,24 +561,24 @@ Private Sub serial_MessageReceived(msg As String)
     
     tmp = Split(msg, ",")
     
-    x = CDbl(tmp(0)) * 0.00066 'now we are in inches for each axis (calibration)
-    Y = CDbl(tmp(1)) * 0.00052
+    x = CDbl(tmp(0)) * modMain.x_calibration '0.00066 'now we are in inches for each axis (calibration)
+    y = CDbl(tmp(1)) * modMain.y_calibration '0.00052
     
     x = Round(x, 3)
-    Y = Round(Y, 3)
+    y = Round(y, 3)
     
-    txtPos = x & "," & Y
+    txtPos = x & "," & y
     
     If hRec <> 0 Then
         
         If Abs(lastX - x) >= smoothing Then recordIt = True
-        If Abs(lastY - Y) >= smoothing Then recordIt = True
+        If Abs(lastY - y) >= smoothing Then recordIt = True
         
         If (recordIt) Then
             lastX = x
-            lastY = Y
+            lastY = y
             hits = hits + 1
-            Print #hRec, "X" & x & " Y" & Y
+            Print #hRec, "X" & x & " Y" & y
         End If
         
         
