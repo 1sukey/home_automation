@@ -14,14 +14,14 @@ Begin VB.Form Form1
       Caption         =   "Mach 3 Integration "
       Height          =   2130
       Left            =   90
-      TabIndex        =   23
+      TabIndex        =   22
       Top             =   4635
       Width           =   7125
       Begin VB.CommandButton cmdLoadFileInMach 
          Caption         =   "Load Recorded Path File in Mach"
          Height          =   420
          Left            =   4275
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   495
          Width           =   2760
       End
@@ -29,7 +29,7 @@ Begin VB.Form Form1
          Caption         =   "Transfer CurPos to Mach"
          Height          =   375
          Left            =   90
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   1035
          Width           =   2220
       End
@@ -37,7 +37,7 @@ Begin VB.Form Form1
          Caption         =   "Goto Next Point in List"
          Height          =   375
          Left            =   90
-         TabIndex        =   25
+         TabIndex        =   24
          Top             =   1620
          Width           =   2220
       End
@@ -45,7 +45,7 @@ Begin VB.Form Form1
          Caption         =   "Zero Mach DROs"
          Height          =   375
          Left            =   90
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   450
          Width           =   2220
       End
@@ -54,14 +54,14 @@ Begin VB.Form Form1
       Caption         =   "..."
       Height          =   330
       Left            =   6750
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   1260
       Width           =   420
    End
    Begin VB.TextBox txtSmooth 
       Height          =   330
       Left            =   5265
-      TabIndex        =   18
+      TabIndex        =   17
       Text            =   ".010"
       Top             =   1665
       Width           =   1410
@@ -157,12 +157,20 @@ Begin VB.Form Form1
       _Version        =   393216
       DTREnable       =   -1  'True
    End
+   Begin VB.CheckBox chkSmoothing 
+      Caption         =   "smoothing"
+      Height          =   240
+      Left            =   4230
+      TabIndex        =   27
+      Top             =   1710
+      Width           =   1095
+   End
    Begin VB.Label Label7 
       Caption         =   "Record Points"
       Height          =   240
       Index           =   1
       Left            =   45
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   855
       Width           =   2445
    End
@@ -177,7 +185,7 @@ Begin VB.Form Form1
       Height          =   285
       Index           =   0
       Left            =   4185
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   810
       Width           =   2445
    End
@@ -190,17 +198,9 @@ Begin VB.Form Form1
    Begin VB.Label lblRecorded 
       Height          =   420
       Left            =   4725
-      TabIndex        =   19
+      TabIndex        =   18
       Top             =   2700
       Width           =   2535
-   End
-   Begin VB.Label Label6 
-      Caption         =   "smoothing"
-      Height          =   285
-      Left            =   4455
-      TabIndex        =   17
-      Top             =   1710
-      Width           =   825
    End
    Begin VB.Label Label5 
       Caption         =   "Save To"
@@ -498,6 +498,8 @@ Private Sub Form_Load()
     cmdXfer2Mach.Enabled = machEnabled
     cmdLoadFileInMach.Enabled = machEnabled
     
+    txtSmooth = GetSetting("cnc_trace", "config", "smoothing", "0.010")
+    
 End Sub
 
 Sub SetMachStatus(msg)
@@ -528,7 +530,9 @@ Private Sub LoadPorts()
     
 End Sub
 
-
+Private Sub Form_Unload(Cancel As Integer)
+    SaveSetting "cnc_trace", "config", "smoothing", txtSmooth
+End Sub
 
 Private Sub lblRefresh_Click()
     Screen.MousePointer = vbHourglass
@@ -571,8 +575,12 @@ Private Sub serial_MessageReceived(msg As String)
     
     If hRec <> 0 Then
         
-        If Abs(lastX - x) >= smoothing Then recordIt = True
-        If Abs(lastY - y) >= smoothing Then recordIt = True
+        If chkSmoothing.value = 1 Then
+            If Abs(lastX - x) >= smoothing Then recordIt = True
+            If Abs(lastY - y) >= smoothing Then recordIt = True
+        Else
+            recordIt = True
+        End If
         
         If (recordIt) Then
             lastX = x
