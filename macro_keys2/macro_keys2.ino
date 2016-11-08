@@ -12,8 +12,8 @@
  * by software delay.
  * 
  * this code also supports sending an adjustable delay mouse clicks, or mouse scroll wheel events
- * I use a 3 position switch on pins 6/7 to select which (center is off). The time delay comes by
- * reading a potentiometer on analog pin 0. Delay is currently mapped between 10ms and 3 seconds.
+ * I use a 3 position switch select which (center is off). The time delay comes by
+ * reading a potentiometer. Delay is currently mapped between 10ms and 3 seconds.
  * this features requires 3 more inputs. 
  * 
  * if it says keyboard.h not found, make sure you set the board to leanardo. You may also have to use a 
@@ -54,7 +54,11 @@ profile 3: visual studio
   7 = f11 step into
   8 = f10 step over
   9 = shift f11 - step out
-  
+
+profile 4: wingware
+  7 = f7 step in
+  8 = step over f6
+  9 = step out f8
 
 https://www.arduino.cc/en/Reference/KeyboardModifiers
 
@@ -77,7 +81,7 @@ const int click_selected = 12;
 const int potPin = A5;
 const int profilePot = A1;
 
-enum profiles{ olly = 1, vb6 = 2, vs = 3};
+enum profiles{ olly = 1, vb6 = 2, vs = 3, wing = 4};
 
 void setup() { 
   
@@ -123,12 +127,14 @@ void handleProfile(void){
 
     //now we give it 3 even ranges to work with..
     profiles profile = olly;
-    if(val >= 340 && val < 680) profile = vb6;
-    if(val >= 680) profile = vs;
+    if(val >= 250 && val < 500) profile = vb6;
+    if(val >= 500 && val < 750) profile = vs;
+    if(val >= 750) profile = wing;
 
     bool b7 = (digitalRead(button7) == LOW);
     bool b8 = (digitalRead(button8) == LOW);
     bool b9 = (digitalRead(button9) == LOW);
+
 /*
     Serial.print("profile:"); Serial.print(profile);
     Serial.print(" b7: "); Serial.print(b7);
@@ -151,6 +157,11 @@ void handleProfile(void){
     7 = f11 step into
     8 = f10 step over
     9 = shift f11 - step out
+    
+  profile 4: wingware
+    7 = f7 step in
+    8 = step over f6
+    9 = step out f8
 */
    if(b7){ //step into...
       switch(profile){
@@ -161,6 +172,9 @@ void handleProfile(void){
                       Keyboard.press(KEY_F8);
                       break;
           case vs:
+                      Keyboard.press(KEY_F7);
+                      break;
+          case wing:
                       Keyboard.press(KEY_F7);
                       break;
       }
@@ -177,6 +191,9 @@ void handleProfile(void){
                       break;
           case vs:
                       Keyboard.press(KEY_F10);
+                      break;
+          case wing:
+                      Keyboard.press(KEY_F6);
                       break;
       }
    }
@@ -195,6 +212,9 @@ void handleProfile(void){
           case vs:
                       Keyboard.press(KEY_RIGHT_SHIFT);
                       Keyboard.press(KEY_F11);
+                      break;
+          case wing:
+                      Keyboard.press(KEY_F8);
                       break;
       }
    }
