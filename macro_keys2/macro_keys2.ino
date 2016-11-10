@@ -120,103 +120,51 @@ int readPot(){
       return map(val, 0, 1023, 10, 3000);   // scale it to use it as a ms time delay (value between 10 and 3000) 
 }
 
-void handleProfile(void){
+void checkDebugKeys(void){
     
-    int val = analogRead(profilePot);
-    //profiles profile = (profiles)map(val, 0, 1023, 1, 3); //this = dead 0, anywhere in between, dead max
+    bool stepIn =   (digitalRead(button7) == LOW);
+    bool stepOver = (digitalRead(button8) == LOW);
+    bool stepOut =  (digitalRead(button9) == LOW);
 
-    //now we give it 3 even ranges to work with..
+    if(!stepIn && !stepOver && !stepOut) return;
+
+    int val = analogRead(profilePot);
+
+    //give it 3 even ranges to work with.. map(1,3) = dead 0, anywhere in between, dead max
     profiles profile = olly;
     if(val >= 250 && val < 500) profile = vb6;
     if(val >= 500 && val < 750) profile = vs;
     if(val >= 750) profile = wing;
 
-    bool b7 = (digitalRead(button7) == LOW);
-    bool b8 = (digitalRead(button8) == LOW);
-    bool b9 = (digitalRead(button9) == LOW);
-
 /*
     Serial.print("profile:"); Serial.print(profile);
-    Serial.print(" b7: "); Serial.print(b7);
-    Serial.print(" b8: "); Serial.print(b8);
-    Serial.print(" b9: "); Serial.println(b9);
+    Serial.print(" stepIn: "); Serial.print(stepIn);
+    Serial.print(" stepOver: "); Serial.print(stepOver);
+    Serial.print(" stepOut: "); Serial.println(stepOut);
 */
-    
-/*
-  profile 1: ollydbg
-    7 = f7 step in
-    8 = f8 step over
-    9 = ctrl-f9 = execute till return (step out)
 
-  profile 2: vb6
-    7 = f8 step into
-    8 = shift f8 step over
-    9 = ctrl shift f8 - step out
-
-  profile 3: visual studio
-    7 = f11 step into
-    8 = f10 step over
-    9 = shift f11 - step out
-    
-  profile 4: wingware
-    7 = f7 step in
-    8 = step over f6
-    9 = step out f8
-*/
-   if(b7){ //step into...
-      switch(profile){
-          case olly:
-                      Keyboard.press(KEY_F7);
-                      break;
-          case vb6:
-                      Keyboard.press(KEY_F8);
-                      break;
-          case vs:
-                      Keyboard.press(KEY_F7);
-                      break;
-          case wing:
-                      Keyboard.press(KEY_F7);
-                      break;
-      }
+   if(profile == olly){
+        if(stepIn)    Keyboard.press(KEY_F7);
+        if(stepOver)  Keyboard.press(KEY_F8);
+        if(stepOut){  Keyboard.press(KEY_LEFT_CTRL); Keyboard.press(KEY_F9);}
    }
 
-   if(b8){ //step over
-      switch(profile){
-          case olly:
-                      Keyboard.press(KEY_F8);
-                      break;
-          case vb6:
-                      Keyboard.press(KEY_RIGHT_SHIFT);
-                      Keyboard.press(KEY_F8);
-                      break;
-          case vs:
-                      Keyboard.press(KEY_F10);
-                      break;
-          case wing:
-                      Keyboard.press(KEY_F6);
-                      break;
-      }
+   if(profile == vb6){
+        if(stepIn)   Keyboard.press(KEY_F8);
+        if(stepOver){Keyboard.press(KEY_RIGHT_SHIFT); Keyboard.press(KEY_F8);}
+        if(stepOut){ Keyboard.press(KEY_LEFT_CTRL); Keyboard.press(KEY_RIGHT_SHIFT); Keyboard.press(KEY_F8);}
    }
 
-   if(b9){ //step out...
-       switch(profile){
-          case olly:
-                      Keyboard.press(KEY_LEFT_CTRL);
-                      Keyboard.press(KEY_F9);
-                      break;
-          case vb6:
-                      Keyboard.press(KEY_LEFT_CTRL);
-                      Keyboard.press(KEY_RIGHT_SHIFT);
-                      Keyboard.press(KEY_F8);
-                      break;
-          case vs:
-                      Keyboard.press(KEY_RIGHT_SHIFT);
-                      Keyboard.press(KEY_F11);
-                      break;
-          case wing:
-                      Keyboard.press(KEY_F8);
-                      break;
-      }
+   if(profile == vs){
+        if(stepIn)   Keyboard.press(KEY_F11);
+        if(stepOver) Keyboard.press(KEY_F10);
+        if(stepOut){ Keyboard.press(KEY_RIGHT_SHIFT); Keyboard.press(KEY_F11);}
+   }
+
+   if(profile == wing){
+        if(stepIn)   Keyboard.press(KEY_F7);
+        if(stepOver) Keyboard.press(KEY_F6);
+        if(stepOut)  Keyboard.press(KEY_F8);
    }
 
    delay(100);
@@ -228,7 +176,9 @@ void handleProfile(void){
 void loop() {
 
     int ms = 0;
-     
+
+    checkDebugKeys(); 
+    
     if (digitalRead(cut) == LOW)    SendCmd('x');
     if (digitalRead(copy) == LOW)   SendCmd('c');
     if (digitalRead(paste) == LOW)  SendCmd('v');
@@ -241,11 +191,8 @@ void loop() {
         Mouse.release();
     }    
         
-    
     if (digitalRead(dblClick) == LOW){ Mouse.click(); delay(200); Mouse.click();delay(200);}
     if (digitalRead(rClick) == LOW){ Mouse.click(MOUSE_RIGHT);  delay(200); }
-
-    if (digitalRead(button7) == LOW || digitalRead(button8) == LOW || digitalRead(button9) == LOW) handleProfile();
     
     if (digitalRead(scroll_selected) == LOW){
         ms = readPot();
