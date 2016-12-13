@@ -21,41 +21,44 @@
  * 
  * if you have problems uploading, press the reset button down until it gets to the uploading phase
  
-version 2 button configuration
+version 2 button configuration (button index not pin number)
 
- 4   1
- 5   2
- 6   3
+ 7   1
+ 8   2
+ 9   3
 
-7   8   9
+4   5   6
 
  dpdt switch for scroll/click mode
  pot 1 for scroll/click frequency
- pot 2 for profile selection - 3 profiles included, only affects buttons 7,8,9
+ pot 2 for profile selection - 4 profiles included, only affects buttons 4,7,8,9
 
 1 = copy
 2 = paste
 3 = cut
-4 = left click
-5 = double click
-6 = right click
+5 = single click (left)
+6 = double click
 
 profile 1: ollydbg
+  4 = ctrl_G, paste (goto address in clipboard)
   7 = f7 step in
   8 = f8 step over
   9 = ctrl-f9 = execute till return (step out)
 
 profile 2: vb6
+  4 = not defined
   7 = f8 step into
   8 = shift f8 step over
   9 = ctrl shift f8 - step out
 
 profile 3: visual studio
+  4 = not defined
   7 = f11 step into
   8 = f10 step over
   9 = shift f11 - step out
 
 profile 4: wingware
+  4 = not defined
   7 = f7 step in
   8 = step over f6
   9 = step out f8
@@ -67,19 +70,19 @@ https://www.arduino.cc/en/Reference/KeyboardModifiers
 #include <Keyboard.h>
 #include <Mouse.h>
 
-const int copy = 3;
-const int paste = 4;
-const int cut = 5;
-const int lClick = 11;
-const int dblClick = 10;
-const int rClick = 9;
-const int button7 = 8;
-const int button8 = 7;
-const int button9 = 6;
+const int copy            = 3;
+const int paste           = 4;
+const int cut             = 5;
+const int button4         = 8; 
+const int lClick          = 7; 
+const int dblClick        = 6; 
+const int button7         = 11;
+const int button8         = 10;
+const int button9         = 9;
 const int scroll_selected = 13;
-const int click_selected = 12;
-const int potPin = A5;
-const int profilePot = A1;
+const int click_selected  = 12;
+const int potPin          = A5;
+const int profilePot      = A1;
 
 enum profiles{ olly = 1, vb6 = 2, vs = 3, wing = 4};
 
@@ -89,9 +92,9 @@ void setup() {
   pinMode(copy, INPUT_PULLUP);
   pinMode(paste, INPUT_PULLUP);
   pinMode(lClick, INPUT_PULLUP);
-  pinMode(rClick, INPUT_PULLUP);
   pinMode(dblClick, INPUT_PULLUP);
 
+  pinMode(button4, INPUT_PULLUP);
   pinMode(button7, INPUT_PULLUP);
   pinMode(button8, INPUT_PULLUP);
   pinMode(button9, INPUT_PULLUP);
@@ -121,7 +124,8 @@ int readPot(){
 }
 
 void checkDebugKeys(void){
-    
+
+    bool btnSpecial=(digitalRead(button4) == LOW);
     bool stepIn =   (digitalRead(button7) == LOW);
     bool stepOver = (digitalRead(button8) == LOW);
     bool stepOut =  (digitalRead(button9) == LOW);
@@ -144,24 +148,28 @@ void checkDebugKeys(void){
 */
 
    if(profile == olly){
+        if(btnSpecial){ SendCmd('g'); SendCmd('v'); /*press enter too? leave manual for data verify*/ }
         if(stepIn)    Keyboard.press(KEY_F7);
         if(stepOver)  Keyboard.press(KEY_F8);
         if(stepOut){  Keyboard.press(KEY_LEFT_CTRL); Keyboard.press(KEY_F9);}
    }
 
    if(profile == vb6){
+        if(btnSpecial){/*not defined yet*/}
         if(stepIn)   Keyboard.press(KEY_F8);
         if(stepOver){Keyboard.press(KEY_RIGHT_SHIFT); Keyboard.press(KEY_F8);}
         if(stepOut){ Keyboard.press(KEY_LEFT_CTRL); Keyboard.press(KEY_RIGHT_SHIFT); Keyboard.press(KEY_F8);}
    }
 
    if(profile == vs){
+        if(btnSpecial){/*not defined yet*/}
         if(stepIn)   Keyboard.press(KEY_F11);
         if(stepOver) Keyboard.press(KEY_F10);
         if(stepOut){ Keyboard.press(KEY_RIGHT_SHIFT); Keyboard.press(KEY_F11);}
    }
 
    if(profile == wing){
+        if(btnSpecial){/*not defined yet*/}
         if(stepIn)   Keyboard.press(KEY_F7);
         if(stepOver) Keyboard.press(KEY_F6);
         if(stepOut)  Keyboard.press(KEY_F8);
@@ -192,7 +200,7 @@ void loop() {
     }    
         
     if (digitalRead(dblClick) == LOW){ Mouse.click(); delay(200); Mouse.click();delay(200);}
-    if (digitalRead(rClick) == LOW){ Mouse.click(MOUSE_RIGHT);  delay(200); }
+    //if (digitalRead(rClick) == LOW){ Mouse.click(MOUSE_RIGHT);  delay(200); }
     
     if (digitalRead(scroll_selected) == LOW){
         ms = readPot();
