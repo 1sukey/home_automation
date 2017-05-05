@@ -1,7 +1,9 @@
 
-#include "RCMotor.h"
-
 /*
+	Author: David Zimmer <dzzie@yahoo.com>
+	site:   http://sandsprite.com
+	License: GPL
+
     the sabertooth automatically handles the main motors signals direct from receiver
     
     this code will handle the chute and actuator motor signals by reading the receiver
@@ -16,22 +18,25 @@
     (ie Transmittor is off or signal has been lost)
 */
 
+#include "RCMotor.h"
+
 int relayPin = 4;
+bool debugMode = true;
 RCMotor chute(12,13,6,0);
 RCMotor actuator(7,8,3,0);
 
 void activateRelay(bool on){
     digitalWrite(relayPin, (on ? LOW : HIGH) );
-    if(chute.debug){ Serial.print(" relayOn: "); Serial.println(on); }  
+    if(debugMode){ Serial.print(" relayOn: "); Serial.println(on); }  
 }
 
 void setup() {
   Serial.begin(9600);
   pinMode(relayPin, OUTPUT);
   activateRelay(false); 
-  chute.debug = true;
-  actuator.debug = true;
-  actuator.deadZone = 100; 
+  chute.debug = debugMode;
+  actuator.debug = debugMode;
+  actuator.deadZone = 200; 
 }
 
 void loop(){
@@ -46,7 +51,7 @@ void loop(){
           activateRelay(false); 
       }
       
-      if(chute.debug) delay(500);
+      if(debugMode) delay(500);
       
       
 }

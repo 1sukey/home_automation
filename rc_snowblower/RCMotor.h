@@ -46,7 +46,8 @@ class RCMotor {
         int speedPin = 0;  //speed control optional, must be a pwm pin
     
     public:
-        int deadZone = 35; //how much of a dead zone to give centered stick
+        uint8_t deadZone = 35; //how much of a dead zone to give centered stick
+	uint8_t constSpeed = 0; //value 0-255
         bool debug = false;
     	
     	//dir_pin1/2 is the direction control pins, must be digital pins
@@ -54,22 +55,22 @@ class RCMotor {
     	//speed_pin is optional, MUST be a PWM capable pin, set to 0 if unused.
     	//to reverse the motor relative to joystick either swap wires on board, or dir1/2 pins in code.
     	RCMotor(int dir_pin1, int dir_pin2, int rc_pin, int speed_pin){
-    		p1   = dir_pin1;
-    		p2   = dir_pin2;
-    		rcPin = rc_pin;
-                speedPin = speed_pin;
+    	    p1   = dir_pin1;
+    	    p2   = dir_pin2;
+    	    rcPin = rc_pin;
+            speedPin = speed_pin;
     
-    		pinMode(rc_pin, INPUT);
-    	        pinMode(p1, OUTPUT);
-    	        pinMode(p2, OUTPUT);
-    		if(speedPin != 0) pinMode(speedPin, OUTPUT);
+    	    pinMode(rc_pin, INPUT);
+    	    pinMode(p1, OUTPUT);
+    	    pinMode(p2, OUTPUT);
+    	    if(speedPin != 0) pinMode(speedPin, OUTPUT);
     	}
       
     	void motorOff(){
-    		if(debug) Serial.print(" motor OFF ");
-    		digitalWrite(p1, LOW);
-                digitalWrite(p2, LOW);
-    		if(speedPin != 0) analogWrite(speedPin, 0);
+	    if(debug){ Serial.print(" motor OFF rcPin: "); Serial.print(rcPin); }
+    	    digitalWrite(p1, LOW);
+            digitalWrite(p2, LOW);
+    	    if(speedPin != 0) analogWrite(speedPin, 0);
     
     	}
     
@@ -98,26 +99,24 @@ class RCMotor {
     			  if(debug) Serial.print(" no signal ");
     			  motorOff();
     		  }
-    		  else if(rv > minRight){ //right stick
+    		  else if(rv > minRight){
     			  digitalWrite(p1, LOW);
     			  digitalWrite(p2, HIGH);
+		          if(debug) Serial.print(" stick Up|Right ");
     			  if(speedPin != 0){
-    				  pwm = map(rv, minRight, 2000, 0, 255); //map our speed to 0-255 range
+    				  if(constSpeed != 0) pwm = constSpeed; else pwm = map(rv, minRight, 2000, 0, 255); //map our speed to 0-255 range
     				  analogWrite(speedPin, pwm);
-    				  if(debug){ Serial.print(" right/up stick speed: "); Serial.println(pwm);}
-    			  }else{
-    				  if(debug) Serial.print(" right/up stick ");
-    			  }
+    				  if(debug){ Serial.print(" speed: "); Serial.println(pwm);}
+			  }
     		  }
     		  else if(rv < minLeft){
     			  digitalWrite(p1, HIGH);
     			  digitalWrite(p2, LOW);
+			  if(debug) Serial.print(" stick Down|Left ");
     			  if(speedPin != 0){
-    				  pwm = map(rv, minLeft, 1000, 0, 255); //map our speed to 0-255 range
+    				  if(constSpeed != 0) pwm = constSpeed; else pwm = map(rv, minLeft, 1000, 0, 255); //map our speed to 0-255 range
     				  analogWrite(speedPin, pwm);
-    				  if(debug){ Serial.print(" left/down stick speed: "); Serial.println(pwm);}
-    			  }else{
-    				  if(debug) Serial.print(" left/down stick "); 
+    				  if(debug){ Serial.print(" speed: "); Serial.println(pwm);}
     			  }
     		  }else{
     			  if(debug) Serial.print(" stick centered ");
