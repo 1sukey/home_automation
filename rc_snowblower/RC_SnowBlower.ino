@@ -16,14 +16,27 @@
        
     Both of these will be shut off instantly if the arduino can not detect any RC signal 
     (ie Transmittor is off or signal has been lost)
+
+    Note: I am also thinking of adding an xbee module which controls a relay that connects the power
+	  to the main relay board as an out of band emergency shutoff. We could also require it to receive
+	  a heart beat message. A 280lb robot with a gas powered auger on the front of it is a fairly dangerous
+	  contraption if something went haywire.
+    
+    Note2: right now we are using one of the rc switches on channel 5/pin 5 to enable/disable the
+          actuator joystick so we dont accidently tweak it while running..in the future if we add
+          a motor to the chute end deflector, this switch will then toggle that joysticks function
+          between the two.
+          
 */
 
 #include "RCMotor.h"
+#include "RCSwitch.h"
 
 int relayPin = 4;
-bool debugMode = true;
-RCMotor chute(12,13,6,0);
-RCMotor actuator(7,8,3,0);
+bool debugMode = false;
+RCMotor chute(12,13,6,0);  //chute rotation rc channel 4
+RCMotor actuator(7,8,3,0); //blower cutting edge height rc channel 3
+RCSwitch rc_switch(5);     //rc channel 5
 
 void activateRelay(bool on){
     digitalWrite(relayPin, (on ? LOW : HIGH) );
@@ -36,14 +49,15 @@ void setup() {
   activateRelay(false); 
   chute.debug = debugMode;
   actuator.debug = debugMode;
-  actuator.deadZone = 200; 
+  rc_switch.debug = debugMode;
+  actuator.deadZone = 100; 
 }
 
 void loop(){
       
       if( chute.receivingSignal() ){
             chute.process();
-	    actuator.process();
+	    rc_switch.isOn() ? actuator.process() : actuator.motorOff();
             activateRelay(true); 
       }else{
           chute.motorOff();

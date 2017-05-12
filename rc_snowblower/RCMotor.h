@@ -7,6 +7,10 @@
 	a DC motor through an L298N driver board. Supports forward and reverse and optional
 	speed control.
 
+	pulseIn 250ms timeout is suitable for out needs no need for the complexity of interrupts.
+	
+	http://rcarduino.blogspot.com/2012/01/how-to-read-rc-receiver-with.html
+	
 	driver board: $7
 	    https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=L298N
 	
@@ -32,7 +36,6 @@
 			rc1.process();
 		}
 
-
 */
 
 #import <Arduino.h>
@@ -44,12 +47,17 @@ class RCMotor {
         int p2;      //digital pin
         int rcPin=0; //must be a PWM capable pin
         int speedPin = 0;  //speed control optional, must be a pwm pin
+        const int centerStick = 1500;
+        const int quarterSecond = 250000; //250ms in micro seconds 
     
     public:
-        uint8_t deadZone = 35; //how much of a dead zone to give centered stick
-	uint8_t constSpeed = 0; //value 0-255
         bool debug = false;
-    	
+        uint8_t deadZone = 35;     //how much of a dead zone to give centered stick
+	uint8_t constSpeed = 0;    //value 0-255
+ 	uint32_t lastReadTime = 0;
+        int lastSignal = -1;
+        int readInterval = 300;    //the caching mechanism might just be bloat..remove?
+
     	//dir_pin1/2 is the direction control pins, must be digital pins
     	//rc_pin is the pin to read the rc control signal from, MUST be a PWM capable pin
     	//speed_pin is optional, MUST be a PWM capable pin, set to 0 if unused.
@@ -60,13 +68,31 @@ class RCMotor {
     	    rcPin = rc_pin;
             speedPin = speed_pin;
     
-    	    pinMode(rc_pin, INPUT);
+    	    pinMode(rcPin, INPUT);
     	    pinMode(p1, OUTPUT);
     	    pinMode(p2, OUTPUT);
     	    if(speedPin != 0) pinMode(speedPin, OUTPUT);
     	}
-      
-    	void motorOff(){
+        
+        int readSignal(){
+             uint32_t now = millis();
+             bool tookReading = false;
+             if(lastReadTime == 0 || (now - lastReadTime) > readInterval){ 
+                 lastSignal = pulseIn(rcPin, HIGH, quarterSecond); 
+                 tookReading = true;
+                 if(debug) Serial.print("Read! ");
+             }
+             if(debug){ 
+                  if(lastReadTime == 0) Serial.print("*");
+                  Serial.print("RCMotor_"); Serial.print(rcPin); 
+                  Serial.print(" Val: "); Serial.print(lastSignal); 
+                  Serial.print(" Time: "); Serial.println(lastReadTime);
+             }
+             if(tookReading) lastReadTime  = millis();
+             return lastSignal;
+         }
+         
+    	void motorOff(){ //cache motor state to avoid needless writes?
 	    if(debug){ Serial.print(" motor OFF rcPin: "); Serial.print(rcPin); }
     	    digitalWrite(p1, LOW);
             digitalWrite(p2, LOW);
@@ -77,17 +103,15 @@ class RCMotor {
     	~RCMotor(){motorOff();}
     
         bool receivingSignal(){
-           int rv = pulseIn(rcPin, HIGH, 25000);
-           if(rv == 0) return false;
+           if( readSignal() == 0) return false;
            return true;
         }
-          
+                
     	void process(){
     
-    		  int rv = pulseIn(rcPin, HIGH, 25000);
+    		  int rv = readSignal();
     		  
     		  int pwm = 0;
-    		  int centerStick = 1300; //range goes from about 850-1750
     		  int minRight = centerStick + deadZone;
     		  int minLeft = centerStick - deadZone;
     
