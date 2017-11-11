@@ -7,8 +7,11 @@
     the sabertooth automatically handles the main motors signals direct from receiver
     
     this code will handle the chute and actuator motor signals by reading the receiver
-    and then controlling the motors through an L298N driver board. This is handled simply
-    through the RCMotor class. We do not use speed control on either of these aux DC motors. 
+    and then controlling the motors. If you are using a L298N driver board use RCMotor.h
+	I upgraded to a 15a driver board amazon part number B01GHKO5O8.
+
+	This is handled simply through the RCMotor class. We do not use speed control on 
+	either of these aux DC motors and just set the const speed.
     
     A two relay board (both controlled by same pin) controls two additional things. 
        1) a large solid state relay that gives power to the sabertooth as a backup safety measure, and 
@@ -29,13 +32,13 @@
           
 */
 
-#include "RCMotor.h"
+#include "RCMotor2.h"
 #include "RCSwitch.h"
 
 int relayPin = 4;
 bool debugMode = false;
-RCMotor chute(12,13,6,0);  //chute rotation rc channel 4
-RCMotor actuator(7,8,3,0); //blower cutting edge height rc channel 3
+RCMotor2 chute(12,11,6);    //chute rotation rc channel 4
+RCMotor2 actuator(8,9,3); //blower cutting edge height rc channel 3
 RCSwitch rc_switch(5);     //rc channel 5
 
 void activateRelay(bool on){
@@ -49,8 +52,7 @@ void setup() {
   activateRelay(false); 
   chute.debug = debugMode;
   actuator.debug = debugMode;
-  rc_switch.debug = debugMode;
-  actuator.deadZone = 100; 
+  rc_switch.debug = debugMode; 
 }
 
 void loop(){
@@ -65,7 +67,7 @@ void loop(){
           activateRelay(false); 
       }
       
-      if(debugMode) delay(500);
+      if(debugMode) delay(1500);
       
       
 }
