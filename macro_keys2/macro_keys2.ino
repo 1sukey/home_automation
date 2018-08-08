@@ -35,7 +35,7 @@ version 2 button configuration (button index not pin number)
 
 1 = copy
 2 = paste
-3 = cut
+3 = select all
 5 = single click (left)
 6 = double click
 
@@ -72,7 +72,7 @@ https://www.arduino.cc/en/Reference/KeyboardModifiers
 
 const int copy            = 3;
 const int paste           = 4;
-const int cut             = 5;
+const int selall          = 5;
 const int button4         = 8; 
 const int lClick          = 7; 
 const int dblClick        = 6; 
@@ -88,7 +88,7 @@ enum profiles{ olly = 1, vb6 = 2, vs = 3, wing = 4};
 
 void setup() { 
   
-  pinMode(cut, INPUT_PULLUP);
+  pinMode(selall, INPUT_PULLUP);
   pinMode(copy, INPUT_PULLUP);
   pinMode(paste, INPUT_PULLUP);
   pinMode(lClick, INPUT_PULLUP);
@@ -187,7 +187,7 @@ void loop() {
 
     checkDebugKeys(); 
     
-    if (digitalRead(cut) == LOW)    SendCmd('x');
+    if (digitalRead(selall) == LOW) SendCmd('a');
     if (digitalRead(copy) == LOW)   SendCmd('c');
     if (digitalRead(paste) == LOW)  SendCmd('v');
     

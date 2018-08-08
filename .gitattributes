@@ -8,3 +8,4 @@
 *.iss eol=crlf
 *.c eol=crlf
 *.h eol=crlf
+*.ino eol=crlf
