@@ -12,7 +12,7 @@
 	
 	http://rcarduino.blogspot.com/2012/01/how-to-read-rc-receiver-with.html
 	
-	driver board: $25
+	driver board: 
 	    https://www.amazon.com/gp/product/B01GHKO5O8/ref=oh_aui_search_detailpage?ie=UTF8&psc=1
 
 */

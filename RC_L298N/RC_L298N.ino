@@ -4,14 +4,15 @@
 	Example code to control a DC motor forward and reverse with variable speed
 	using a L298N driver board, an Arduino, and a typical RC Controller
 	
-	driver board: $7
-	    https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=L298N
-	
-	flysky rc controller transmitter and receiver: $50
-	    https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=fs-t6&rh=i%3Aaps%2Ck%3Afs-t6
-	
 	video overview:
 	    https://www.youtube.com/watch?v=v_N5HmXmDyk&feature=youtu.be
+	    
+	Parts list:
+	    FlySky FS-T6 Controller - https://amzn.to/2DOKLVm
+		L298n Driver board:       https://amzn.to/301qxB5
+		RC Relay:                 https://amzn.to/2PR1JY3
+		Arduino Uno:              https://amzn.to/2Ybzzd0
+
 
 */
 

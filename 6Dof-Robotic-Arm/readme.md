@@ -2,7 +2,7 @@
 This code is to experiment with a SainSmart 6 axis
 Robotic arm.
 
-http://www.sainsmart.com/diy-6-axis-servos-control-palletizing-robot-arm-model-for-arduino-uno-mega2560.html
+https://amzn.to/2ZThe6q
 
 ![screenshot](https://raw.githubusercontent.com/dzzie/home_automation/master/6Dof-Robotic-Arm/6axis001.jpg)
 
