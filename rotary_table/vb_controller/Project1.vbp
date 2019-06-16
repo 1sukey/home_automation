@@ -1,6 +1,6 @@
 Type=Exe
 Form=Form1.frm
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Object={648A5603-2C6E-101B-82B6-000000000014}#1.1#0; MSCOMM32.OCX
 Module=modMain; modMain.bas
 Class=clsSerial; clsSerial.cls
@@ -15,7 +15,7 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
 MinorVer=0
-RevisionVer=2
+RevisionVer=3
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionCompanyName="sandsprite"

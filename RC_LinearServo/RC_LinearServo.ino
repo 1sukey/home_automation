@@ -13,16 +13,16 @@
     
     materials:
     ---------------------------------------------------------------------------------------
-    driver board: $7
+    driver board: 
         https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=L298N
     
-    flysky rc controller transmitter and receiver: $50
+    flysky rc controller transmitter and receiver:  
         https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=fs-t6&rh=i%3Aaps%2Ck%3Afs-t6
     
-    linear pot: $10
+    linear pot:  
         https://www.amazon.com/gp/product/B019W8J1XC/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1
 
-    linear actuator: $35
+    linear actuator:  
         https://www.amazon.com/gp/product/B00SAXKYPA/ref=oh_aui_detailpage_o07_s03?ie=UTF8&psc=1
 
 */

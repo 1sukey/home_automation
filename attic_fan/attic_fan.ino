@@ -11,12 +11,12 @@ purpose:
           with cold/hot temps, putting on boots, walking through open insulation, tracking said
           insulation back down into the house with me, old bat crap and maybe even actual bats)
           
-hardware: OLED screen Amazon part number: b00o2llt30: $15  ( 128x64 pixels, I2c , SSD1306 driver )
-          DHT22 temp/humidity sensor                : $10
-          micro hobby servo amazon part B001CFUBN8  : $5 
-          arduino uno clone amazon part B00E5WJSHK  : $13
+hardware: OLED screen Amazon part number: b00o2llt30:   ( 128x64 pixels, I2c , SSD1306 driver )
+          DHT22 temp/humidity sensor                :  
+          micro hobby servo amazon part B001CFUBN8  :  
+          arduino uno clone amazon part B00E5WJSHK  :  
           potentiometer, wire, NPN transistor, etc ------
-                                                    ~ $45
+                                                    
           
           you could shrink this down allot cost wise if you eliminate the dht22 and oled screen, then
           you can use an attiny + servo + pot (3+5+1). I probably will in time, but first I want the feedback

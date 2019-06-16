@@ -1,18 +1,18 @@
 
-This is a quick project to add automatic indexing to a manual rotary table.
+This is a quick project to add automatic indexing to a manual rotary table or dividing head.
 
 For this task we use the following components:
 
-* Arduino Uno - $25
-* SainSmart CNC Router Single 1 Axis 3.5A TB6560 Stepper Stepping Motor Driver Board WL ($20)
-    http://www.amazon.com/gp/product/B008BGLOTQ/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1
-* a small 12-24 DC power supply $6
-* a small stepper motor $10
-
-Total cost for the electronics is about $60
+* Arduino Uno 
+* SainSmart CNC Router Single 1 Axis 3.5A TB6560 Stepper Stepping Motor Driver Board WL  
+     https://www.amazon.com/gp/product/B008BGLOTQ/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B008BGLOTQ&linkCode=as2&tag=dzzie-20&linkId=3df57e78fae38175d4a5cd1f7b2e1682
+     
+* a small 12-24 DC power supply 
+* a small stepper motor 
 
 A video of the build can be found at the following URL: 
-    http://youtu.be/m4VFPw1MFgo
+    rotary table: http://youtu.be/m4VFPw1MFgo
+    dividing head: https://www.youtube.com/watch?v=Fuq_NjAvOsY
 
 Inside the Arduino folder is the source code for the microcontroller. The VB controller folder
 contains a Visual Basic six Windows application that talks to the Arduino over the serial port

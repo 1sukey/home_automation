@@ -77,26 +77,26 @@ Begin VB.Form Form1
    Begin VB.TextBox TxtValue 
       Alignment       =   1  'Right Justify
       Height          =   285
-      Left            =   1980
+      Left            =   540
       TabIndex        =   3
       Text            =   "100"
-      Top             =   1170
-      Width           =   780
+      Top             =   1020
+      Width           =   600
    End
    Begin VB.OptionButton optDegrees 
       Caption         =   "Degrees"
       Height          =   420
-      Left            =   180
+      Left            =   1260
       TabIndex        =   2
-      Top             =   1260
+      Top             =   1320
       Width           =   1005
    End
    Begin VB.OptionButton optDivisions 
       Caption         =   "Divisions"
       Height          =   420
-      Left            =   180
+      Left            =   1260
       TabIndex        =   1
-      Top             =   945
+      Top             =   1005
       Value           =   -1  'True
       Width           =   960
    End
@@ -197,24 +197,6 @@ Begin VB.Form Form1
       TabIndex        =   12
       Top             =   540
       Width           =   780
-   End
-   Begin VB.Line Line1 
-      BorderColor     =   &H00FF0000&
-      BorderWidth     =   3
-      Index           =   1
-      X1              =   1260
-      X2              =   1800
-      Y1              =   1485
-      Y2              =   1305
-   End
-   Begin VB.Line Line1 
-      BorderColor     =   &H00FF0000&
-      BorderWidth     =   3
-      Index           =   0
-      X1              =   1260
-      X2              =   1800
-      Y1              =   1125
-      Y2              =   1260
    End
    Begin VB.Label Label4 
       Caption         =   "Delay (ms)"

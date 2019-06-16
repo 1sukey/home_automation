@@ -7,8 +7,8 @@
    
     Notes: 
        * stepper control board used: 
-            SainSmart CNC Router Single 1 Axis 3.5A TB6560 Stepper Stepping Motor Driver Board WL ($20)
-            http://www.amazon.com/gp/product/B008BGLOTQ/ref=oh_aui_detailpage_o09_s00?ie=UTF8&psc=1
+            SainSmart CNC Router Single 1 Axis 3.5A TB6560 Stepper Stepping Motor Driver Board WL 
+            https://www.amazon.com/gp/product/B008BGLOTQ/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B008BGLOTQ&linkCode=as2&tag=dzzie-20&linkId=3df57e78fae38175d4a5cd1f7b2e1682
     
        * the home button just reverses the number of cycles run. It does not know about full revolutions
        

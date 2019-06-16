@@ -27,9 +27,11 @@ Build Videos:
 Materials:
 ----------------------------------------------
 
-	* SainSmart 6 Axis robotic arm - $180
-	* Arduino Uno - $24
+	* SainSmart 6 Axis robotic arm 
+           https://www.amazon.com/gp/product/B00UMOSQCI/ref=as_li_tl?ie=UTF8&tag=dzzie-20&camp=1789&creative=9325&linkCode=as2&creativeASIN=B00UMOSQCI&linkId=d21b1936cba5a558ec484cbcd6b61bd9
+
+	* Arduino Uno 
 	* 6 potentiometers   
-	* 5v - 5amp power supply - $9
+	* 5v - 5amp power supply 
 	* hook up wire, solder, wood etc..
 
